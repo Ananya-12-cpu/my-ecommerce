@@ -58,8 +58,10 @@ function getSnapshot() {
   return items;
 }
 
+const EMPTY_SERVER_SNAPSHOT: CartItem[] = [];
+
 function getServerSnapshot() {
-  return [] as CartItem[];
+  return EMPTY_SERVER_SNAPSHOT;
 }
 
 function setItems(next: CartItem[]) {
