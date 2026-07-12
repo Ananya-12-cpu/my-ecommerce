@@ -1,4 +1,5 @@
 import type { Category, Product } from "./types";
+export { getProductImage } from "./image";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -50,11 +51,4 @@ export async function getProductById(id: number): Promise<Product | null> {
 
 export function getCategories(): Promise<Category[]> {
   return apiFetch<Category[]>("/categories", 3600);
-}
-
-const FALLBACK_IMAGE = "https://placehold.co/600x600?text=No+Image";
-
-export function getProductImage(images: string[]): string {
-  const valid = images?.find((src) => /^https?:\/\//.test(src));
-  return valid ?? FALLBACK_IMAGE;
 }

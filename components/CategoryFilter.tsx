@@ -65,10 +65,10 @@ export default function CategoryFilter({
             </button>
           )}
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-col sm:overflow-visible sm:px-0 sm:pb-0">
           <Link
             href={buildHref({ category: undefined })}
-            className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+            className={`shrink-0 rounded-md px-3 py-1.5 text-sm transition-colors ${
               !activeCategoryId
                 ? "bg-black text-white dark:bg-white dark:text-black"
                 : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
@@ -80,7 +80,7 @@ export default function CategoryFilter({
             <Link
               key={category.id}
               href={buildHref({ category: String(category.id) })}
-              className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+              className={`shrink-0 rounded-md px-3 py-1.5 text-sm transition-colors ${
                 activeCategoryId === category.id
                   ? "bg-black text-white dark:bg-white dark:text-black"
                   : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
@@ -96,14 +96,14 @@ export default function CategoryFilter({
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
           Price
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
           <input
             type="number"
             min={0}
             placeholder="Min"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="w-full rounded-md border border-zinc-200 bg-transparent px-2 py-1.5 text-sm dark:border-zinc-800"
+            className="w-full min-w-0 flex-1 rounded-md border border-zinc-200 bg-transparent px-2 py-1.5 text-sm dark:border-zinc-800"
           />
           <span className="text-zinc-400">–</span>
           <input
@@ -112,7 +112,7 @@ export default function CategoryFilter({
             placeholder="Max"
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-full rounded-md border border-zinc-200 bg-transparent px-2 py-1.5 text-sm dark:border-zinc-800"
+            className="w-full min-w-0 flex-1 rounded-md border border-zinc-200 bg-transparent px-2 py-1.5 text-sm dark:border-zinc-800"
           />
         </div>
         <button
