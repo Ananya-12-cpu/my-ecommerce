@@ -29,6 +29,7 @@ const STORAGE_KEY = "wishlist";
 // without ever calling setState from inside an effect.
 let items: WishlistItem[] = [];
 let listeners: Array<() => void> = [];
+const EMPTY_ITEMS: WishlistItem[] = [];
 
 function readFromStorage(): WishlistItem[] {
   if (typeof window === "undefined") return [];
@@ -54,7 +55,7 @@ function getSnapshot() {
 }
 
 function getServerSnapshot() {
-  return [] as WishlistItem[];
+  return EMPTY_ITEMS;
 }
 
 function setItems(next: WishlistItem[]) {

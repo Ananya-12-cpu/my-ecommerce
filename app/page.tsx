@@ -5,14 +5,23 @@ import { getCategories, getProducts } from "@/lib/api";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    minPrice?: string;
+    maxPrice?: string;
+  }>;
 }) {
-  const { category } = await searchParams;
+  const { category, minPrice, maxPrice } = await searchParams;
   const categoryId = category ? Number(category) : undefined;
 
   const [categories, products] = await Promise.all([
     getCategories(),
-    getProducts({ categoryId, limit: 24 }),
+    getProducts({
+      categoryId,
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      limit: 24,
+    }),
   ]);
 
   return (
@@ -26,21 +35,23 @@ export default async function Home({
         </p>
       </div>
 
-      <div className="mb-8">
+      <div className="flex flex-col gap-8 sm:flex-row">
         <CategoryFilter categories={categories} activeCategoryId={categoryId} />
-      </div>
 
-      {products.length === 0 ? (
-        <p className="text-zinc-500 dark:text-zinc-400">
-          No products found in this category.
-        </p>
-      ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        <div className="flex-1">
+          {products.length === 0 ? (
+            <p className="text-zinc-500 dark:text-zinc-400">
+              No products found for this filter.
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

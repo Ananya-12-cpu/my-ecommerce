@@ -21,12 +21,18 @@ async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
 export function getProducts(params?: {
   categoryId?: number;
   title?: string;
+  minPrice?: number;
+  maxPrice?: number;
   limit?: number;
   offset?: number;
 }): Promise<Product[]> {
   const search = new URLSearchParams();
   if (params?.categoryId) search.set("categoryId", String(params.categoryId));
   if (params?.title) search.set("title", params.title);
+  if (params?.minPrice !== undefined)
+    search.set("price_min", String(params.minPrice));
+  if (params?.maxPrice !== undefined)
+    search.set("price_max", String(params.maxPrice));
   if (params?.limit) search.set("limit", String(params.limit));
   if (params?.offset) search.set("offset", String(params.offset));
 
