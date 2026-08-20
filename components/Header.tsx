@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Header() {
   const { totalItems } = useCart();
   const { items: wishlistItems } = useWishlist();
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-black/80">
@@ -40,6 +42,29 @@ export default function Header() {
               </span>
             )}
           </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                {user.email}
+                {user.role === "admin" && (
+                  <span className="ml-1 rounded bg-black px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white dark:bg-white dark:text-black">
+                    Admin
+                  </span>
+                )}
+              </span>
+              <button
+                type="button"
+                onClick={logout}
+                className="hover:text-zinc-600 dark:hover:text-zinc-300"
+              >
+                Log out
+              </button>
+            </div>
+          ) : (
+            <Link href="/login" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+              Log in
+            </Link>
+          )}
         </nav>
       </div>
     </header>
