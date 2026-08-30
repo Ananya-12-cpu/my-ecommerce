@@ -1,0 +1,144 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "slug": "electronics",
+      "image": "https://picsum.photos/seed/cat-electronics/600/600"
+    },
+    {
+      "id": 2,
+      "name": "Accessories",
+      "slug": "accessories",
+      "image": "https://picsum.photos/seed/cat-accessories/600/600"
+    },
+    {
+      "id": 3,
+      "name": "Footwear",
+      "slug": "footwear",
+      "image": "https://picsum.photos/seed/cat-footwear/600/600"
+    },
+    {
+      "id": 4,
+      "name": "Apparel",
+      "slug": "apparel",
+      "image": "https://picsum.photos/seed/cat-apparel/600/600"
+    },
+    {
+      "id": 5,
+      "name": "Home",
+      "slug": "home",
+      "image": "https://picsum.photos/seed/cat-home/600/600"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "Aero Wireless Headphones",
+      "slug": "aero-wireless-headphones",
+      "price": 89.99,
+      "description": "Over-ear wireless headphones with active noise cancellation, 30-hour battery life, and plush memory-foam ear cups for all-day comfort.",
+      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://picsum.photos/seed/cat-electronics/600/600" },
+      "images": ["https://picsum.photos/seed/aero-headphones/600/600"]
+    },
+    {
+      "id": 2,
+      "title": "Pulse Smartwatch",
+      "slug": "pulse-smartwatch",
+      "price": 129.0,
+      "description": "Track workouts, sleep, and heart rate with a bright always-on display and up to 7 days of battery life.",
+      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://picsum.photos/seed/cat-electronics/600/600" },
+      "images": ["https://picsum.photos/seed/pulse-smartwatch/600/600"]
+    },
+    {
+      "id": 3,
+      "title": "Everyday Canvas Backpack",
+      "slug": "everyday-canvas-backpack",
+      "price": 54.5,
+      "description": "A durable canvas backpack with a padded laptop sleeve, water-resistant coating, and room for a full day of essentials.",
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
+      "images": ["https://picsum.photos/seed/canvas-backpack/600/600"]
+    },
+    {
+      "id": 4,
+      "title": "Minimalist Leather Wallet",
+      "slug": "minimalist-leather-wallet",
+      "price": 32.0,
+      "description": "Slim full-grain leather wallet with RFID-blocking card slots and a discreet cash pocket.",
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
+      "images": ["https://picsum.photos/seed/leather-wallet/600/600"]
+    },
+    {
+      "id": 5,
+      "title": "Cloudline Running Shoes",
+      "slug": "cloudline-running-shoes",
+      "price": 74.99,
+      "description": "Lightweight running shoes with responsive cushioning and a breathable knit upper built for daily miles.",
+      "category": { "id": 3, "name": "Footwear", "slug": "footwear", "image": "https://picsum.photos/seed/cat-footwear/600/600" },
+      "images": ["https://picsum.photos/seed/running-shoes/600/600"]
+    },
+    {
+      "id": 6,
+      "title": "Classic Denim Jacket",
+      "slug": "classic-denim-jacket",
+      "price": 68.0,
+      "description": "A timeless mid-wash denim jacket with a relaxed fit, button front, and durable stitching.",
+      "category": { "id": 4, "name": "Apparel", "slug": "apparel", "image": "https://picsum.photos/seed/cat-apparel/600/600" },
+      "images": ["https://picsum.photos/seed/denim-jacket/600/600"]
+    },
+    {
+      "id": 7,
+      "title": "Ceramic Pour-Over Coffee Set",
+      "slug": "ceramic-pour-over-coffee-set",
+      "price": 42.75,
+      "description": "A hand-glazed ceramic dripper and mug set for slow, flavorful mornings. Dishwasher safe.",
+      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://picsum.photos/seed/cat-home/600/600" },
+      "images": ["https://picsum.photos/seed/coffee-set/600/600"]
+    },
+    {
+      "id": 8,
+      "title": "Tabletop Succulent Trio",
+      "slug": "tabletop-succulent-trio",
+      "price": 24.99,
+      "description": "Three low-maintenance succulents in matching matte ceramic pots, ready to brighten any desk or shelf.",
+      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://picsum.photos/seed/cat-home/600/600" },
+      "images": ["https://picsum.photos/seed/succulent-trio/600/600"]
+    },
+    {
+      "id": 9,
+      "title": "Portable Bluetooth Speaker",
+      "slug": "portable-bluetooth-speaker",
+      "price": 39.99,
+      "description": "Pocket-sized speaker with surprisingly big sound, IPX7 waterproofing, and 12 hours of playtime.",
+      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://picsum.photos/seed/cat-electronics/600/600" },
+      "images": ["https://picsum.photos/seed/bt-speaker/600/600"]
+    },
+    {
+      "id": 10,
+      "title": "Recycled Wool Throw Blanket",
+      "slug": "recycled-wool-throw-blanket",
+      "price": 58.0,
+      "description": "A soft, warm throw woven from recycled wool blend, finished with fringe edges in a herringbone pattern.",
+      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://picsum.photos/seed/cat-home/600/600" },
+      "images": ["https://picsum.photos/seed/wool-blanket/600/600"]
+    },
+    {
+      "id": 11,
+      "title": "Trail-Ready Sunglasses",
+      "slug": "trail-ready-sunglasses",
+      "price": 45.0,
+      "description": "Polarized lenses with a lightweight, flexible frame built to handle hikes, runs, and everything in between.",
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
+      "images": ["https://picsum.photos/seed/sunglasses/600/600"]
+    },
+    {
+      "id": 12,
+      "title": "Insulated Steel Water Bottle",
+      "slug": "insulated-steel-water-bottle",
+      "price": 27.5,
+      "description": "Double-wall insulated bottle that keeps drinks cold for 24 hours or hot for 12. 750ml capacity.",
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
+      "images": ["https://picsum.photos/seed/water-bottle/600/600"]
+    }
+  ]
+}

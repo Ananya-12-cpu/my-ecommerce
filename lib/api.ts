@@ -1,23 +1,11 @@
 import type { Category, Product } from "./types";
+import data from "@/data/data.json";
 export { getProductImage } from "./image";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-if (!BASE_URL) {
-  throw new Error("REACT_APP_BASE_URL is not set in the environment");
-}
-
-async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    next: { revalidate },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Request to ${path} failed with status ${res.status}`);
-  }
-
-  return res.json() as Promise<T>;
-}
+const { categories, products } = data as {
+  categories: Category[];
+  products: Product[];
+};
 
 export function getProducts(params?: {
   categoryId?: number;
@@ -27,28 +15,34 @@ export function getProducts(params?: {
   limit?: number;
   offset?: number;
 }): Promise<Product[]> {
-  const search = new URLSearchParams();
-  if (params?.categoryId) search.set("categoryId", String(params.categoryId));
-  if (params?.title) search.set("title", params.title);
-  if (params?.minPrice !== undefined)
-    search.set("price_min", String(params.minPrice));
-  if (params?.maxPrice !== undefined)
-    search.set("price_max", String(params.maxPrice));
-  if (params?.limit) search.set("limit", String(params.limit));
-  if (params?.offset) search.set("offset", String(params.offset));
+  let result = products;
 
-  const query = search.toString();
-  return apiFetch<Product[]>(`/products${query ? `?${query}` : ""}`);
+  if (params?.categoryId) {
+    result = result.filter((product) => product.category.id === params.categoryId);
+  }
+  if (params?.title) {
+    const query = params.title.toLowerCase();
+    result = result.filter((product) => product.title.toLowerCase().includes(query));
+  }
+  if (params?.minPrice !== undefined) {
+    result = result.filter((product) => product.price >= params.minPrice!);
+  }
+  if (params?.maxPrice !== undefined) {
+    result = result.filter((product) => product.price <= params.maxPrice!);
+  }
+
+  const offset = params?.offset ?? 0;
+  result = params?.limit !== undefined
+    ? result.slice(offset, offset + params.limit)
+    : result.slice(offset);
+
+  return Promise.resolve(result);
 }
 
 export async function getProductById(id: number): Promise<Product | null> {
-  try {
-    return await apiFetch<Product>(`/products/${id}`);
-  } catch {
-    return null;
-  }
+  return products.find((product) => product.id === id) ?? null;
 }
 
 export function getCategories(): Promise<Category[]> {
-  return apiFetch<Category[]>("/categories", 3600);
+  return Promise.resolve(categories);
 }
