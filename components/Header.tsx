@@ -42,6 +42,19 @@ export default function Header() {
               </span>
             )}
           </Link>
+          {user?.role === "admin" && (
+            <>
+              <Link href="/admin/analytics" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+                Analytics
+              </Link>
+              <Link href="/admin/reports" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+                Reports
+              </Link>
+              <Link href="/admin/customers" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+                Customers
+              </Link>
+            </>
+          )}
           {user ? (
             <div className="flex items-center gap-3">
               <span className="text-xs text-zinc-500 dark:text-zinc-400">
