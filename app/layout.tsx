@@ -4,6 +4,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { CartProvider } from "@/lib/cart-context";
 import { OrdersProvider } from "@/lib/orders-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
+import { DeliveryProvider } from "@/lib/delivery-context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
@@ -39,10 +40,12 @@ export default function RootLayout({
           <CartProvider>
             <OrdersProvider>
               <WishlistProvider>
-                <Header />
-                <main className="flex flex-1 flex-col">{children}</main>
-                <Footer />
-                <Chatbot />
+                <DeliveryProvider>
+                  <Header />
+                  <main className="flex flex-1 flex-col">{children}</main>
+                  <Footer />
+                  <Chatbot />
+                </DeliveryProvider>
               </WishlistProvider>
             </OrdersProvider>
           </CartProvider>
