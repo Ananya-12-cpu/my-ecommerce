@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+
+const buttonClass =
+  "w-full rounded-full bg-black px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200";
 
 export default function AddToCartButton({
   id,
@@ -14,21 +17,23 @@ export default function AddToCartButton({
   price: number;
   image: string;
 }) {
-  const { addItem } = useCart();
-  const [added, setAdded] = useState(false);
+  const { items, addItem } = useCart();
+  const inCart = items.some((item) => item.id === id);
 
-  const handleAdd = () => {
-    addItem({ id, title, price, image });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
+  if (inCart) {
+    return (
+      <Link href="/cart" className={buttonClass}>
+        Go to cart
+      </Link>
+    );
+  }
 
   return (
     <button
-      onClick={handleAdd}
-      className="w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+      onClick={() => addItem({ id, title, price, image })}
+      className={buttonClass}
     >
-      {added ? "Added to cart" : "Add to cart"}
+      Add to cart
     </button>
   );
 }
