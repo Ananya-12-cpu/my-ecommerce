@@ -105,12 +105,6 @@ export default function Chatbot() {
                 >
                   <p>{message.text}</p>
 
-                  {message.products && message.products.length === 0 && (
-                    <p className="mt-2 text-xs italic text-zinc-500 dark:text-zinc-400">
-                      No result
-                    </p>
-                  )}
-
                   {message.products && message.products.length > 0 && (
                     <div className="mt-2 space-y-2">
                       {message.products.map((product) => (

@@ -7,16 +7,8 @@ const MAX_RESULTS = 9;
 
 function matchesFilters(product: Product, filters: ParsedQuery): boolean {
   if (filters.categoryId && product.category.id !== filters.categoryId) return false;
-  if (filters.minPrice !== undefined) {
-    if (filters.minPriceInclusive === false) {
-      if (product.price <= filters.minPrice) return false;
-    } else if (product.price < filters.minPrice) return false;
-  }
-  if (filters.maxPrice !== undefined) {
-    if (filters.maxPriceInclusive === false) {
-      if (product.price >= filters.maxPrice) return false;
-    } else if (product.price > filters.maxPrice) return false;
-  }
+  if (filters.minPrice !== undefined && product.price < filters.minPrice) return false;
+  if (filters.maxPrice !== undefined && product.price > filters.maxPrice) return false;
   return true;
 }
 
@@ -48,6 +40,29 @@ export async function POST(request: Request) {
     ).filter((product) => matchesFilters(product, parsed));
   }
 
+  // Never come back empty: progressively relax filters to show related items.
+  let relaxed = false;
+  if (products.length === 0) {
+    relaxed = true;
+    const attempts: Array<() => Promise<Product[]>> = [
+      // Same category (any price)
+      async () =>
+        parsed.categoryId
+          ? getProducts({ categoryId: parsed.categoryId, limit: 50 })
+          : [],
+      // Any of the typed words, ignoring price/category
+      ...parsed.keywords.map(
+        (word) => () => getProducts({ title: word, limit: 50 })
+      ),
+      // Anything at all
+      () => getProducts({ limit: 50 }),
+    ];
+    for (const attempt of attempts) {
+      products = await attempt();
+      if (products.length > 0) break;
+    }
+  }
+
   products = products.slice(0, MAX_RESULTS);
 
   const appliedParams = new URLSearchParams();
@@ -71,10 +86,10 @@ export async function POST(request: Request) {
   }
 
   let reply: string;
-  if (products.length === 0) {
+  if (relaxed) {
     reply = filterDescriptions.length
-      ? `I couldn't find anything matching ${filterDescriptions.join(", ")}. Try a different category or price range.`
-      : "I couldn't find anything matching that. Try mentioning a category (like shoes or electronics) or a price range.";
+      ? `Here are some related items you might like for ${filterDescriptions.join(", ")}:`
+      : "Here are some items you might like:";
   } else {
     reply = filterDescriptions.length
       ? `Here's what I found for ${filterDescriptions.join(", ")}:`
