@@ -47,7 +47,22 @@ export default function Header() {
               Offer Zone
             </Link>
           )}
-          {user?.role === "user" && (
+         
+          {user?.role === "admin" && (
+            <>
+              <Link href="/admin/analytics" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+                Analytics
+              </Link>
+              <Link href="/admin/reports" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+                Reports
+              </Link>
+              <Link href="/admin/customers" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+                Customers
+              </Link>
+            </>
+          )}
+
+           {/* {user?.role === "user" && ( */}
             <Link
               href="/profile"
               aria-label="Profile"
@@ -67,20 +82,7 @@ export default function Header() {
                 <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" />
               </svg>
             </Link>
-          )}
-          {user?.role === "admin" && (
-            <>
-              <Link href="/admin/analytics" className="hover:text-zinc-600 dark:hover:text-zinc-300">
-                Analytics
-              </Link>
-              <Link href="/admin/reports" className="hover:text-zinc-600 dark:hover:text-zinc-300">
-                Reports
-              </Link>
-              <Link href="/admin/customers" className="hover:text-zinc-600 dark:hover:text-zinc-300">
-                Customers
-              </Link>
-            </>
-          )}
+          {/* )} */}
           {/* {user ? (
             <div className="flex items-center gap-3">
               <span className="text-xs text-zinc-500 dark:text-zinc-400">

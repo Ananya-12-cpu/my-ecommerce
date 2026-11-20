@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import CustomerGuard from "@/components/CustomerGuard";
+import AuthGuard from "@/components/AuthGuard";
 import { useAuth } from "@/lib/auth-context";
 import { useOrders } from "@/lib/orders-context";
 import { useWishlist } from "@/lib/wishlist-context";
@@ -60,6 +60,7 @@ function ProfileView() {
 
   const email = user?.email ?? "";
   const initials = email.slice(0, 2).toUpperCase();
+  const isAdmin = user?.role === "admin";
   const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
 
   return (
@@ -70,17 +71,19 @@ function ProfileView() {
         </div>
         <div>
           <p className="text-xs font-medium uppercase tracking-wide opacity-70">
-            Customer profile
+            {isAdmin ? "Admin profile" : "Customer profile"}
           </p>
           <h1 className="mt-1 text-xl font-semibold tracking-tight">{email}</h1>
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-4">
-        <StatCard label="Orders" value={orders.length} href="/orders" />
-        <StatCard label="Wishlist" value={wishlistItems.length} href="/wishlist" />
-        <StatCard label="In cart" value={cartItems} href="/cart" />
-      </div>
+      {!isAdmin && (
+        <div className="mt-6 grid grid-cols-3 gap-4">
+          <StatCard label="Orders" value={orders.length} href="/orders" />
+          <StatCard label="Wishlist" value={wishlistItems.length} href="/wishlist" />
+          <StatCard label="In cart" value={cartItems} href="/cart" />
+        </div>
+      )}
 
       <div className="mt-6 flex flex-col gap-6">
         <SectionCard title="Account details">
@@ -88,12 +91,17 @@ function ProfileView() {
             <dt className="text-zinc-500 dark:text-zinc-400">Email</dt>
             <dd>{email}</dd>
             <dt className="text-zinc-500 dark:text-zinc-400">Account type</dt>
-            <dd>Customer</dd>
-            <dt className="text-zinc-500 dark:text-zinc-400">Total spent</dt>
-            <dd>${totalSpent.toFixed(2)}</dd>
+            <dd>{isAdmin ? "Admin" : "Customer"}</dd>
+            {!isAdmin && (
+              <>
+                <dt className="text-zinc-500 dark:text-zinc-400">Total spent</dt>
+                <dd>${totalSpent.toFixed(2)}</dd>
+              </>
+            )}
           </dl>
         </SectionCard>
 
+        {!isAdmin && (
         <SectionCard
           title="Delivery location"
           action={
@@ -117,6 +125,7 @@ function ProfileView() {
             </p>
           )}
         </SectionCard>
+        )}
       </div>
 
       <button
@@ -132,8 +141,8 @@ function ProfileView() {
 
 export default function ProfilePage() {
   return (
-    <CustomerGuard>
+    <AuthGuard>
       <ProfileView />
-    </CustomerGuard>
+    </AuthGuard>
   );
 }
