@@ -5,6 +5,15 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Category } from "@/lib/types";
 
+const PRICE_RANGES: { label: string; min?: string; max?: string }[] = [
+  { label: "Any price" },
+  { label: "Under $25", max: "25" },
+  { label: "$25 – $50", min: "25", max: "50" },
+  { label: "$50 – $100", min: "50", max: "100" },
+  { label: "$100 – $200", min: "100", max: "200" },
+  { label: "$200 & above", min: "200" },
+];
+
 export default function CategoryFilter({
   categories,
   activeCategoryId,
@@ -46,11 +55,13 @@ export default function CategoryFilter({
   function clearFilters() {
     setMinPrice("");
     setMaxPrice("");
-    router.push("/shop");
+    router.push(
+      searchParams.get("sort") ? `/shop?sort=${searchParams.get("sort")}` : "/shop"
+    );
   }
 
   return (
-    <aside className="w-full shrink-0 space-y-8 sm:w-56">
+    <aside className="w-full space-y-8">
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
@@ -96,6 +107,27 @@ export default function CategoryFilter({
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
           Price
         </h2>
+        <ul className="mb-3 space-y-1 text-sm">
+          {PRICE_RANGES.map((range) => {
+            const active =
+              (searchParams.get("minPrice") ?? "") === (range.min ?? "") &&
+              (searchParams.get("maxPrice") ?? "") === (range.max ?? "");
+            return (
+              <li key={range.label}>
+                <Link
+                  href={buildHref({ minPrice: range.min, maxPrice: range.max })}
+                  className={`block rounded-md px-3 py-1 transition-colors ${
+                    active
+                      ? "font-semibold text-sky-700 dark:text-sky-400"
+                      : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  }`}
+                >
+                  {range.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
         <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
           <input
             type="number"
