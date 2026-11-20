@@ -9,7 +9,7 @@ export default function CategoryFilter({
   categories,
   activeCategoryId,
 }: {
-  categories: Category[];
+  categories: Category[]; 
   activeCategoryId?: number;
 }) {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function CategoryFilter({
       }
     }
     const query = params.toString();
-    return query ? `/?${query}` : "/";
+    return query ? `/shop?${query}` : "/shop";
   }
 
   function applyPriceFilter() {
@@ -46,7 +46,7 @@ export default function CategoryFilter({
   function clearFilters() {
     setMinPrice("");
     setMaxPrice("");
-    router.push("/");
+    router.push("/shop");
   }
 
   return (

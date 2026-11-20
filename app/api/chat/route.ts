@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   if (parsed.maxPrice !== undefined)
     appliedParams.set("maxPrice", String(parsed.maxPrice));
   const query = appliedParams.toString();
-  const viewAllHref = query ? `/?${query}` : "/";
+  const viewAllHref = query ? `/shop?${query}` : "/shop";
 
   const filterDescriptions: string[] = [];
   if (parsed.categoryName) filterDescriptions.push(parsed.categoryName.toLowerCase());

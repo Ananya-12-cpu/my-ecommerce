@@ -17,7 +17,7 @@ export default function Header() {
           Shoply
         </Link>
         <nav className="flex items-center gap-6 text-sm font-medium">
-          <Link href="/" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+          <Link href="/shop" className="hover:text-zinc-600 dark:hover:text-zinc-300">
             Shop
           </Link>
           <Link
