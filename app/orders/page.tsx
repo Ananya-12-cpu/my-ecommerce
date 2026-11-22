@@ -16,7 +16,7 @@ export default function OrdersPage() {
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
         <h1 className="text-2xl font-semibold">Please log in</h1>
         <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Log in to see your orders.
+          Log in to see your orders. 12
         </p>
         <Link
           href="/login"
