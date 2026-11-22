@@ -2,9 +2,31 @@
 
 import Link from "next/link";
 import { useOrders } from "@/lib/orders-context";
+import { useAuth } from "@/lib/auth-context";
 
 export default function OrdersPage() {
-  const { orders } = useOrders();
+  const { orders: allOrders } = useOrders();
+  const { user } = useAuth();
+  const orders = user
+    ? allOrders.filter((o) => o.userEmail === user.email)
+    : [];
+
+  if (!user) {
+    return (
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
+        <h1 className="text-2xl font-semibold">Please log in</h1>
+        <p className="mt-2 text-zinc-500 dark:text-zinc-400">
+          Log in to see your orders.
+        </p>
+        <Link
+          href="/login"
+          className="mt-6 rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
+        >
+          Log in
+        </Link>
+      </div>
+    );
+  }
 
   if (orders.length === 0) {
     return (

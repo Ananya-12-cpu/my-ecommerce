@@ -53,12 +53,13 @@ function SectionCard({
 
 function ProfileView() {
   const { user, logout } = useAuth();
-  const { orders } = useOrders();
+  const { orders: allOrders } = useOrders();
   const { items: wishlistItems } = useWishlist();
   const { totalItems: cartItems } = useCart();
   const { location } = useDeliveryLocation();
 
   const email = user?.email ?? "";
+  const orders = allOrders.filter((o) => o.userEmail === email);
   const initials = email.slice(0, 2).toUpperCase();
   const isAdmin = user?.role === "admin";
   const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);

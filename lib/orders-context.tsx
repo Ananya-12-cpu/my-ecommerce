@@ -14,11 +14,12 @@ export interface Order {
   items: CartItem[];
   total: number;
   createdAt: string;
+  userEmail?: string;
 }
 
 interface OrdersContextValue {
   orders: Order[];
-  addOrder: (items: CartItem[], total: number) => Order;
+  addOrder: (items: CartItem[], total: number, userEmail?: string) => Order;
 }
 
 const OrdersContext = createContext<OrdersContextValue | null>(null);
@@ -67,11 +68,12 @@ function setOrders(next: Order[]) {
 export function OrdersProvider({ children }: { children: ReactNode }) {
   const orders = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const addOrder = useCallback((items: CartItem[], total: number) => {
+  const addOrder = useCallback((items: CartItem[], total: number, userEmail?: string) => {
     const order: Order = {
       id: crypto.randomUUID(),
       items,
       total,
+      userEmail,
       createdAt: new Date().toISOString(),
     };
     setOrders([order, ...orders]);

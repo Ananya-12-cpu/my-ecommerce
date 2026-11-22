@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { useOrders } from "@/lib/orders-context";
+import { useAuth } from "@/lib/auth-context";
 
 const PAYMENT_METHODS = [
   { id: "card", label: "Credit / Debit Card", description: "Visa, Mastercard, Amex", icon: "💳" },
@@ -16,6 +17,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCart();
   const { addOrder } = useOrders();
+  const { user } = useAuth();
   const [method, setMethod] = useState(PAYMENT_METHODS[0].id);
   const [paid, setPaid] = useState(false);
 
@@ -26,7 +28,7 @@ export default function CheckoutPage() {
   }, [items.length, paid, router]);
 
   function pay() {
-    addOrder(items, totalPrice);
+    addOrder(items, totalPrice, user?.email);
     clearCart();
     setPaid(true);
   }

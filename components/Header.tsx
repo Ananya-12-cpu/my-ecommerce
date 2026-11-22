@@ -42,6 +42,11 @@ export default function Header() {
               </span>
             )}
           </Link>
+          {user?.role === "user" && (
+            <Link href="/orders" className="hover:text-zinc-600 dark:hover:text-zinc-300">
+              Orders
+            </Link>
+          )}
           {user && (
             <Link href="/offers" className="hover:text-zinc-600 dark:hover:text-zinc-300">
               Offer Zone
