@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { useOrders } from "@/lib/orders-context";
 import { useAuth } from "@/lib/auth-context";
+import { activeOffers } from "@/lib/offers-data";
 
 const PAYMENT_METHODS = [
   { id: "card", label: "Credit / Debit Card", description: "Visa, Mastercard, Amex", icon: "💳" },
@@ -14,6 +16,11 @@ const PAYMENT_METHODS = [
 ];
 
 const BANKS = ["HDFC Bank", "ICICI Bank", "State Bank of India", "Axis Bank", "Kotak Mahindra Bank"];
+
+function percentOf(discount: string) {
+  const m = discount.match(/(\d+(?:\.\d+)?)\s*%/);
+  return m ? Number(m[1]) : 0;
+}
 
 const inputClass =
   "w-full rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-zinc-400 focus:border-black dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-white";
@@ -43,6 +50,44 @@ export default function CheckoutPage() {
   const [upiId, setUpiId] = useState("");
   const [bank, setBank] = useState(BANKS[0]);
 
+  const itemCount = items.reduce((n, i) => n + i.quantity, 0);
+  const [offerInput, setOfferInput] = useState("");
+  const [appliedCode, setAppliedCode] = useState<string | null>(null);
+  const [offerError, setOfferError] = useState("");
+
+  const offer = appliedCode ? activeOffers.find((o) => o.code === appliedCode) : undefined;
+  const discount = offer ? Math.min(totalPrice, (totalPrice * percentOf(offer.discount)) / 100) : 0;
+  const finalTotal = Math.max(0, totalPrice - discount);
+
+  function applyOffer() {
+    const code = offerInput.trim().toUpperCase();
+    if (!code) {
+      setOfferError("Enter an offer code.");
+      return;
+    }
+    const found = activeOffers.find((o) => o.code === code);
+    if (!found) {
+      setOfferError("Invalid offer code.");
+      return;
+    }
+    if (found.code === "FREESHIP" && totalPrice < 50) {
+      setOfferError("This code needs an order of $50 or more.");
+      return;
+    }
+    if (found.category === "Bundle" && itemCount < 2) {
+      setOfferError("This code needs at least 2 items.");
+      return;
+    }
+    setAppliedCode(code);
+    setOfferError("");
+    setOfferInput("");
+  }
+
+  function removeOffer() {
+    setAppliedCode(null);
+    setOfferError("");
+  }
+
   useEffect(() => {
     if (items.length === 0 && !paid) {
       router.replace("/cart");
@@ -61,7 +106,7 @@ export default function CheckoutPage() {
 
   function pay() {
     if (!detailsValid) return;
-    addOrder(items, totalPrice, user?.email);
+    addOrder(items, finalTotal, user?.email);
     clearCart();
     setPaid(true);
   }
@@ -75,7 +120,6 @@ export default function CheckoutPage() {
   }
 
   const selected = PAYMENT_METHODS.find((m) => m.id === method);
-  const itemCount = items.reduce((n, i) => n + i.quantity, 0);
 
   return (
     <div className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
@@ -262,18 +306,73 @@ export default function CheckoutPage() {
             ))}
           </ul>
 
+          <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+            <label className={labelClass}>Offer code</label>
+            {appliedCode && offer ? (
+              <div className="flex items-center justify-between rounded-lg border border-green-300 bg-green-50 px-3.5 py-2.5 text-sm dark:border-green-800 dark:bg-green-900/20">
+                <span className="font-medium text-green-700 dark:text-green-400">
+                  {appliedCode} applied · {offer.discount}
+                </span>
+                <button
+                  onClick={removeOffer}
+                  className="text-xs font-medium text-zinc-600 underline dark:text-zinc-400"
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  className={inputClass}
+                  placeholder="Enter code"
+                  value={offerInput}
+                  onChange={(e) => {
+                    setOfferInput(e.target.value);
+                    setOfferError("");
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && applyOffer()}
+                />
+                <button
+                  onClick={applyOffer}
+                  className="shrink-0 rounded-lg bg-black px-4 text-sm font-medium text-white dark:bg-white dark:text-black"
+                >
+                  Apply
+                </button>
+              </div>
+            )}
+            {offerError && (
+              <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{offerError}</p>
+            )}
+            {!appliedCode && (
+              <Link
+                href="/offers"
+                className="mt-2 inline-block text-xs font-medium text-zinc-600 underline hover:text-black dark:text-zinc-400 dark:hover:text-white"
+              >
+                Browse offers & copy a code →
+              </Link>
+            )}
+          </div>
+
           <dl className="mt-4 space-y-2 border-t border-zinc-200 pt-4 text-sm dark:border-zinc-800">
             <div className="flex justify-between">
               <dt className="text-zinc-500 dark:text-zinc-400">Subtotal</dt>
               <dd>${totalPrice.toFixed(2)}</dd>
             </div>
+            {discount > 0 && (
+              <div className="flex justify-between">
+                <dt className="text-zinc-500 dark:text-zinc-400">Discount ({appliedCode})</dt>
+                <dd className="text-green-600 dark:text-green-400">
+                  -${discount.toFixed(2)}
+                </dd>
+              </div>
+            )}
             <div className="flex justify-between">
               <dt className="text-zinc-500 dark:text-zinc-400">Shipping</dt>
               <dd className="text-green-600 dark:text-green-400">Free</dd>
             </div>
             <div className="flex justify-between border-t border-zinc-200 pt-3 text-base font-semibold dark:border-zinc-800">
               <dt>Total</dt>
-              <dd>${totalPrice.toFixed(2)}</dd>
+              <dd>${finalTotal.toFixed(2)}</dd>
             </div>
           </dl>
 
@@ -282,7 +381,7 @@ export default function CheckoutPage() {
             disabled={!detailsValid}
             className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none dark:bg-white dark:text-black"
           >
-            {method === "cod" ? "Place order" : `Pay $${totalPrice.toFixed(2)}`}
+            {method === "cod" ? "Place order" : `Pay $${finalTotal.toFixed(2)}`}
           </button>
 
           <p className="mt-3 text-center text-xs text-zinc-500 dark:text-zinc-400">
