@@ -77,6 +77,13 @@ a, button, input, select, textarea {
 }
 button:not(:disabled):active { transform: scale(0.97); }
 
+/* Pointer cursor on every button (Tailwind v4 preflight resets it to default). */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+button:disabled { cursor: not-allowed; }
+
 /* Lift effect for cards (opt-in). */
 .hover-lift:hover { transform: translateY(-3px); }
 
