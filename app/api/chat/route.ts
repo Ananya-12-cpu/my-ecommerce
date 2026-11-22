@@ -12,6 +12,44 @@ function matchesFilters(product: Product, filters: ParsedQuery): boolean {
   return true;
 }
 
+function withinOneEdit(a: string, b: string): boolean {
+  if (a === b) return true;
+  if (Math.abs(a.length - b.length) > 1) return false;
+  let i = 0;
+  let j = 0;
+  let edits = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) {
+      i++;
+      j++;
+    } else {
+      if (++edits > 1) return false;
+      if (a.length > b.length) i++;
+      else if (a.length < b.length) j++;
+      else {
+        i++;
+        j++;
+      }
+    }
+  }
+  return edits + (a.length - i) + (b.length - j) <= 1;
+}
+
+function scoreProduct(product: Product, keywords: string[]): number {
+  const text = `${product.title} ${product.category.name}`.toLowerCase();
+  const words = text.split(/[^a-z0-9]+/).filter(Boolean);
+  let score = 0;
+  for (const keyword of keywords) {
+    if (text.includes(keyword)) score += 2;
+    else if (
+      keyword.length >= 4 &&
+      words.some((w) => withinOneEdit(keyword, w))
+    )
+      score += 1;
+  }
+  return score;
+}
+
 export async function POST(request: Request) {
   const { message } = (await request.json()) as { message?: string };
 
@@ -28,9 +66,32 @@ export async function POST(request: Request) {
   // The upstream API doesn't reliably combine title/categoryId/price params
   // together, so only one server-side filter is sent per request and the
   // rest (price, category) are applied in-memory for correctness.
-  let products = (
-    await getProducts({ title: parsed.keyword, limit: 50 })
-  ).filter((product) => matchesFilters(product, parsed));
+  let products: Product[];
+  if (parsed.keywords.length > 0) {
+    // Search the full phrase and each word separately, merge, then rank by
+    // how many typed words match (typo-tolerant) so "lether jacket" surfaces
+    // leather jackets first, then anything leather or jacket.
+    const terms = Array.from(
+      new Set([parsed.keywords.join(" "), ...parsed.keywords])
+    );
+    const results = await Promise.all(
+      terms.map((term) => getProducts({ title: term, limit: 50 }))
+    );
+    const merged = new Map<number, Product>();
+    for (const list of results) for (const p of list) merged.set(p.id, p);
+    products = Array.from(merged.values())
+      .filter((product) => matchesFilters(product, parsed))
+      .map((product) => ({
+        product,
+        score: scoreProduct(product, parsed.keywords),
+      }))
+      .sort((a, b) => b.score - a.score)
+      .map((entry) => entry.product);
+  } else {
+    products = (await getProducts({ limit: 50 })).filter((product) =>
+      matchesFilters(product, parsed)
+    );
+  }
 
   let usedKeyword = parsed.keyword;
   if (products.length === 0 && parsed.keyword) {
