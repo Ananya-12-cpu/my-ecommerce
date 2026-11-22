@@ -1,3 +1,4 @@
+import Reveal from "@/components/Reveal";
 import Link from "next/link";
 import CategoryFilter from "@/components/CategoryFilter";
 import CategoryCard from "@/components/CategoryCard";
@@ -54,7 +55,7 @@ export default async function Home() {
 
       <div className="relative z-[1] mx-auto -mt-20 w-full max-w-[1500px] space-y-5 px-4 sm:-mt-28 sm:px-6">
         {/* Category cards */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="stagger grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {categories.map((cat) => (
             <CategoryCard key={cat.id} category={cat} products={byCategory(cat.id)} />
           ))}
@@ -92,11 +93,11 @@ export default async function Home() {
           </div>
         </div>
 
-        <ProductRow title="New arrivals" products={newArrivals} href="/shop" />
-        <ProductRow title="Under $50" products={under50} href="/shop?maxPrice=50" />
+        <Reveal><ProductRow title="New arrivals" products={newArrivals} href="/shop" /></Reveal>
+        <Reveal><ProductRow title="Under $50" products={under50} href="/shop?maxPrice=50" /></Reveal>
 
         {/* Promo banner */}
-        <Link
+        <Reveal><Link
           href="/offers"
           className="block rounded-md bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-700 p-8 text-white shadow-sm transition-opacity hover:opacity-95 sm:p-12"
         >
@@ -112,12 +113,12 @@ export default async function Home() {
           <span className="mt-5 inline-block rounded-full bg-amber-400 px-6 py-2.5 text-sm font-semibold text-zinc-900">
             Explore offers
           </span>
-        </Link>
+        </Link></Reveal>
 
-        <ProductRow title="Premium picks" products={premium} href="/shop" />
+        <Reveal><ProductRow title="Premium picks" products={premium} href="/shop" /></Reveal>
 
         {/* Perks */}
-        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+        <Reveal><div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           {perks.map((perk) => (
             <div
               key={perk.title}
@@ -129,20 +130,20 @@ export default async function Home() {
               </p>
             </div>
           ))}
-        </div>
+        </div></Reveal>
 
         {/* Full catalogue */}
-        <section
+        <Reveal><section
           id="all-products"
           className="scroll-mt-20 rounded-md bg-white p-5 shadow-sm dark:bg-zinc-900"
         >
           <h2 className="mb-4 text-xl font-bold">Explore all products</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="stagger grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-        </section>
+        </section></Reveal>
       </div>
     </div>
   );

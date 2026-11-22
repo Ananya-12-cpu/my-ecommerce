@@ -8,7 +8,7 @@ export default function ProductListItem({ product }: { product: Product }) {
   const [dollars, cents] = product.price.toFixed(2).split(".");
 
   return (
-    <article className="flex gap-4 rounded-lg border border-zinc-200 p-3 transition-shadow hover:shadow-md sm:gap-6 sm:p-4 dark:border-zinc-800">
+    <article className="flex gap-4 rounded-lg border border-zinc-200 p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:gap-6 sm:p-4 dark:border-zinc-800">
       <Link
         href={`/products/${product.id}`}
         className="aspect-square w-32 shrink-0 overflow-hidden rounded-md bg-zinc-100 sm:w-52 dark:bg-zinc-900"

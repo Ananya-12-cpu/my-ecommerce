@@ -38,7 +38,7 @@ export default function ProductRow({
                   src={getProductImage(product.images)}
                   alt={product.title}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <p className="mt-2 line-clamp-2 text-sm group-hover:text-orange-600">

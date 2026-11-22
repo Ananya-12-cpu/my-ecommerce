@@ -66,7 +66,7 @@ function CustomerOfferZone() {
         </p>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="stagger mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {activeOffers.map((offer) => (
           <OfferCard key={offer.code} offer={offer} />
         ))}
@@ -87,7 +87,7 @@ function AdminOfferZone() {
         Manage promotional codes across the storefront. Data shown is illustrative.
       </p>
 
-      <div className="mt-8 grid grid-cols-3 gap-4">
+      <div className="stagger mt-8 grid grid-cols-3 gap-4">
         <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">Active offers</p>
           <p className="mt-2 text-2xl font-semibold">{activeCount}</p>

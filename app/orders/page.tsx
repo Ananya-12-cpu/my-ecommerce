@@ -16,7 +16,7 @@ export default function OrdersPage() {
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
         <h1 className="text-2xl font-semibold">Please log in</h1>
         <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Log in to see your orders. 12
+          Log in to see your orders.
         </p>
         <Link
           href="/login"
@@ -49,7 +49,7 @@ export default function OrdersPage() {
     <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
       <h1 className="mb-8 text-2xl font-semibold tracking-tight">Your orders</h1>
 
-      <ul className="flex flex-col gap-6">
+      <ul className="stagger flex flex-col gap-6">
         {orders.map((order) => (
           <li
             key={order.id}

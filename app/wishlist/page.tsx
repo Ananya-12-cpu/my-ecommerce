@@ -1,11 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
 
 export default function WishlistPage() {
   const { items, removeItem } = useWishlist();
+  const [removing, setRemoving] = useState<number[]>([]);
+
+  function handleRemove(id: number) {
+    setRemoving((r) => [...r, id]);
+    setTimeout(() => {
+      removeItem(id);
+      setRemoving((r) => r.filter((x) => x !== id));
+    }, 300);
+  }
   const { addItem } = useCart();
 
   if (items.length === 0) {
@@ -31,11 +41,11 @@ export default function WishlistPage() {
         Your wishlist
       </h1>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="stagger flex flex-col gap-4">
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex items-center gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className={`flex items-center gap-4 rounded-lg border border-zinc-200 p-4 transition-shadow hover:shadow-md dark:border-zinc-800 ${removing.includes(item.id) ? "animate-slide-out" : ""}`}
           >
             <Link href={`/products/${item.id}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -63,7 +73,7 @@ export default function WishlistPage() {
               Add to cart
             </button>
             <button
-              onClick={() => removeItem(item.id)}
+              onClick={() => handleRemove(item.id)}
               className="text-sm text-zinc-400 hover:text-red-500"
               aria-label="Remove from wishlist"
             >

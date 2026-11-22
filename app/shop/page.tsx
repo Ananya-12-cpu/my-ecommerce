@@ -133,7 +133,7 @@ export default async function ShopPage({
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="stagger flex flex-col gap-4">
               {products.map((product) => (
                 <ProductListItem key={product.id} product={product} />
               ))}

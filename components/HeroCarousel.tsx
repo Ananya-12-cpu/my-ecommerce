@@ -53,7 +53,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             className={`relative flex min-h-[280px] w-full shrink-0 items-center sm:min-h-[380px] lg:min-h-[440px] ${slide.gradient}`}
           >
             <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-6 px-6 pb-24 pt-10 sm:px-12">
-              <div className="max-w-xl text-white">
+              <div key={i === index ? "active" : "idle"} className={`max-w-xl text-white ${i === index ? "animate-slide-in-left" : ""}`}>
                 <p className="text-xs font-semibold uppercase tracking-widest text-white/80">
                   {slide.eyebrow}
                 </p>
@@ -75,7 +75,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               <img
                 src={slide.image}
                 alt=""
-                className="hidden h-56 w-56 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20 sm:block lg:h-72 lg:w-72"
+                className={`hidden h-56 w-56 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20 transition-transform duration-700 sm:block lg:h-72 lg:w-72 ${i === index ? "scale-100" : "scale-90"}`}
               />
             </div>
           </div>

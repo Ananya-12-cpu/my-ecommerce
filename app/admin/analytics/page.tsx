@@ -153,7 +153,7 @@ export default function AnalyticsPage() {
           Store performance for the last 30 days. Data shown is illustrative.
         </p>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="stagger mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {kpis.map((kpi) => (
             <StatTile key={kpi.label} {...kpi} />
           ))}

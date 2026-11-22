@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [attempts, setAttempts] = useState(0);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,6 +19,7 @@ export default function LoginPage() {
 
     if (!result.success) {
       setError(result.error ?? "Invalid email or password.");
+      setAttempts((n) => n + 1);
       return;
     }
 
@@ -65,7 +67,7 @@ export default function LoginPage() {
           />
         </div>
 
-        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+        {error && <p key={error + attempts} className="animate-shake text-sm text-red-600 dark:text-red-400">{error}</p>}
 
         <button
           type="submit"

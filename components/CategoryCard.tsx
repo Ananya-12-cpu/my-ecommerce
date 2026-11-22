@@ -13,7 +13,7 @@ export default function CategoryCard({
   const grid = tiles.length === 4;
 
   return (
-    <div className="flex flex-col rounded-md bg-white p-5 shadow-sm dark:bg-zinc-900">
+    <div className="flex flex-col rounded-md bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-zinc-900">
       <h2 className="mb-3 text-xl font-bold">Shop {category.name}</h2>
       <div className={`grid flex-1 gap-3 ${grid ? "grid-cols-2" : "grid-cols-1"}`}>
         {tiles.map((product) => (
@@ -24,7 +24,7 @@ export default function CategoryCard({
                 src={getProductImage(product.images)}
                 alt={product.title}
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
             <p className="mt-1 line-clamp-1 text-xs">{product.title}</p>

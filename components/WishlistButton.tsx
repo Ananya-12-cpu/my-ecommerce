@@ -27,7 +27,7 @@ export default function WishlistButton({
           : "border-zinc-300 hover:border-zinc-500 dark:border-zinc-700 dark:hover:border-zinc-500"
       }`}
     >
-      <span aria-hidden="true">{wishlisted ? "♥" : "♡"}</span>
+      <span key={String(wishlisted)} aria-hidden="true" className={wishlisted ? "animate-heart-pop inline-block" : "inline-block"}>{wishlisted ? "♥" : "♡"}</span>
       {wishlisted ? "Wishlisted" : "Add to wishlist"}
     </button>
   );

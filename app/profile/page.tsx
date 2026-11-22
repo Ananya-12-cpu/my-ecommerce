@@ -79,7 +79,7 @@ function ProfileView() {
       </div>
 
       {!isAdmin && (
-        <div className="mt-6 grid grid-cols-3 gap-4">
+        <div className="stagger mt-6 grid grid-cols-3 gap-4">
           <StatCard label="Orders" value={orders.length} href="/orders" />
           <StatCard label="Wishlist" value={wishlistItems.length} href="/wishlist" />
           <StatCard label="In cart" value={cartItems} href="/cart" />

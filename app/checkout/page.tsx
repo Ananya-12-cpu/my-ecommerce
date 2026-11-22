@@ -62,7 +62,7 @@ export default function CheckoutPage() {
             <button
               key={m.id}
               onClick={() => setMethod(m.id)}
-              className={`flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-colors ${
+              className={`flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all active:scale-[0.99] ${
                 isSelected
                   ? "border-black bg-zinc-50 dark:border-white dark:bg-zinc-900"
                   : "border-zinc-200 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
@@ -85,7 +85,7 @@ export default function CheckoutPage() {
                 }`}
               >
                 {isSelected && (
-                  <span className="h-2 w-2 rounded-full bg-white dark:bg-black" />
+                  <span className="animate-scale-in h-2 w-2 rounded-full bg-white dark:bg-black" />
                 )}
               </span>
             </button>
@@ -95,15 +95,15 @@ export default function CheckoutPage() {
 
       <button
         onClick={pay}
-        className="mt-8 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
+        className="mt-8 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
       >
         Pay ${totalPrice.toFixed(2)}
       </button>
 
       {paid && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6">
-          <div className="w-full max-w-sm rounded-xl bg-white p-8 text-center dark:bg-zinc-900">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-3xl text-green-600 dark:bg-green-900/40 dark:text-green-400">
+        <div className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6">
+          <div className="animate-scale-in w-full max-w-sm rounded-xl bg-white p-8 text-center dark:bg-zinc-900">
+            <div className="animate-scale-in animate-pulse-ring mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-3xl text-green-600 dark:bg-green-900/40 dark:text-green-400">
               ✓
             </div>
             <h2 className="text-xl font-semibold">Payment successful</h2>
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
             </p>
             <button
               onClick={goToOrders}
-              className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
+              className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
             >
               View orders
             </button>

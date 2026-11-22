@@ -22,7 +22,7 @@ export default function AddToCartButton({
 
   if (inCart) {
     return (
-      <Link href="/cart" className={buttonClass}>
+      <Link href="/cart" className={`${buttonClass} animate-scale-in`}>
         Go to cart
       </Link>
     );

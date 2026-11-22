@@ -66,7 +66,7 @@ export default function Chatbot() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
-        <div className="mb-3 flex h-[32rem] w-80 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950 sm:w-96">
+        <div className="animate-pop-in mb-3 flex h-[32rem] w-80 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950 sm:w-96">
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
             <h2 className="text-sm font-semibold">Shopping Assistant</h2>
             <div className="flex items-center gap-3">
@@ -90,11 +90,11 @@ export default function Chatbot() {
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={
+                className={`animate-fade-in-up ${
                   message.role === "user"
                     ? "flex justify-end"
                     : "flex justify-start"
-                }
+                }`}
               >
                 <div
                   className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
@@ -144,7 +144,7 @@ export default function Chatbot() {
               </div>
             ))}
             {isLoading && (
-              <div className="flex justify-start">
+              <div className="animate-fade-in flex justify-start">
                 <div className="rounded-lg bg-zinc-100 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
                   Thinking…
                 </div>

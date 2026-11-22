@@ -1,11 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 
 export default function CartPage() {
   const router = useRouter();
+  const [removing, setRemoving] = useState<number[]>([]);
+
+  function handleRemove(id: number) {
+    setRemoving((r) => [...r, id]);
+    setTimeout(() => {
+      removeItem(id);
+      setRemoving((r) => r.filter((x) => x !== id));
+    }, 300);
+  }
   const { items, removeItem, updateQuantity, totalPrice, clearCart } =
     useCart();
 
@@ -18,7 +28,7 @@ export default function CartPage() {
         </p>
         <Link
           href="/"
-          className="mt-6 rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
+          className="mt-6 rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
         >
           Continue shopping
         </Link>
@@ -30,11 +40,11 @@ export default function CartPage() {
     <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
       <h1 className="mb-8 text-2xl font-semibold tracking-tight">Your cart</h1>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="stagger flex flex-col gap-4">
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex items-center gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+            className={`flex items-center gap-4 rounded-lg border border-zinc-200 p-4 transition-shadow hover:shadow-md dark:border-zinc-800 ${removing.includes(item.id) ? "animate-slide-out" : ""}`}
           >
             <Link href={`/products/${item.id}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -60,7 +70,7 @@ export default function CartPage() {
               >
                 −
               </button>
-              <span className="w-6 text-center">{item.quantity}</span>
+              <span key={item.quantity} className="animate-bump inline-block w-6 text-center">{item.quantity}</span>
               <button
                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
                 className="h-8 w-8 rounded-full border border-zinc-300 hover:border-zinc-500 dark:border-zinc-700"
@@ -69,11 +79,11 @@ export default function CartPage() {
                 +
               </button>
             </div>
-            <p className="w-20 text-right font-medium">
+            <p key={item.quantity} className="animate-bump w-20 text-right font-medium">
               ${(item.price * item.quantity).toFixed(2)}
             </p>
             <button
-              onClick={() => removeItem(item.id)}
+              onClick={() => handleRemove(item.id)}
               className="text-sm text-zinc-400 hover:text-red-500"
               aria-label="Remove item"
             >
@@ -92,13 +102,13 @@ export default function CartPage() {
         </button>
         <div className="text-right">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">Total</p>
-          <p className="text-2xl font-semibold">${totalPrice.toFixed(2)}</p>
+          <p key={totalPrice} className="animate-bump text-2xl font-semibold">${totalPrice.toFixed(2)}</p>
         </div>
       </div>
 
       <button
         onClick={() => router.push("/checkout")}
-        className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
+        className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
       >
         Checkout
       </button>

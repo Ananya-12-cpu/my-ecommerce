@@ -24,3 +24,141 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ---------- Animations & transitions ---------- */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes badge-pop {
+  0%   { transform: scale(0.4); }
+  60%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.animate-fade-in-up { animation: fade-in-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-fade-in    { animation: fade-in 0.3s ease-out both; }
+.animate-pop-in     { animation: pop-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: bottom right; }
+.animate-badge-pop  { animation: badge-pop 0.3s ease-out both; }
+
+/* Staggered entrance for the direct children of a list/grid. */
+.stagger > * {
+  animation: fade-in-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.stagger > :nth-child(1)  { --i: 0; }
+.stagger > :nth-child(2)  { --i: 1; }
+.stagger > :nth-child(3)  { --i: 2; }
+.stagger > :nth-child(4)  { --i: 3; }
+.stagger > :nth-child(5)  { --i: 4; }
+.stagger > :nth-child(6)  { --i: 5; }
+.stagger > :nth-child(7)  { --i: 6; }
+.stagger > :nth-child(8)  { --i: 7; }
+.stagger > :nth-child(n+9) { --i: 8; }
+
+/* Smooth hover/focus/press feedback on all interactive elements. */
+a, button, input, select, textarea {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+button:not(:disabled):active { transform: scale(0.97); }
+
+/* Lift effect for cards (opt-in). */
+.hover-lift:hover { transform: translateY(-3px); }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Event-driven animations ---------- */
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+@keyframes bump {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+@keyframes heart-pop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.5) rotate(-10deg); }
+  60%  { transform: scale(0.9) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes slide-out {
+  to { opacity: 0; transform: translateX(40px); height: 0; padding-block: 0; margin-block: 0; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgb(34 197 94 / 0.5); }
+  100% { box-shadow: 0 0 0 14px rgb(34 197 94 / 0); }
+}
+
+.animate-shake       { animation: shake 0.4s ease-in-out; }
+.animate-bump        { animation: bump 0.3s ease-out; }
+.animate-heart-pop   { animation: heart-pop 0.45s ease-out; }
+.animate-slide-out   { animation: slide-out 0.3s ease-in forwards; overflow: hidden; }
+.animate-scale-in    { animation: scale-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-slide-in-left { animation: slide-in-left 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-pulse-ring  { animation: pulse-ring 1s ease-out 0.3s 2; }
+
+/* Scroll reveal: starts hidden, .is-visible is added by <Reveal>. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Animated underline for nav links. */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Focus glow on form fields. */
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 3px rgb(113 113 122 / 0.25);
+}
+
+/* Fade-in overlay for modals. */
+.animate-overlay { animation: fade-in 0.2s ease-out both; }

@@ -29,7 +29,7 @@ export default function CustomersPage() {
           Customer accounts and lifetime value. Data shown is illustrative.
         </p>
 
-        <div className="mt-8 grid grid-cols-3 gap-4">
+        <div className="stagger mt-8 grid grid-cols-3 gap-4">
           <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
             <p className="text-sm text-zinc-500 dark:text-zinc-400">Total customers</p>
             <p className="mt-2 text-2xl font-semibold">{customers.length}</p>
