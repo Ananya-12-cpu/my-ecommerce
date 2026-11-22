@@ -7,3 +7,4 @@ export { default as ItemRow, useAnimatedRemove } from "./ItemRow";
 export { default as PageContainer } from "./PageContainer";
 export { default as QuantityStepper } from "./QuantityStepper";
 export { StatCard, StatGrid } from "./StatCard";
+export { default as Card } from "./Card";

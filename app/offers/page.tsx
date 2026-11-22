@@ -2,15 +2,9 @@
 
 import { useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
-import { Badge, DataTable, PageContainer, StatGrid } from "@/components/ui";
+import { PageContainer, StatCard } from "@/components/ui";
 import { useAuth } from "@/lib/auth-context";
 import { activeOffers, adminOffers, type AdminOffer } from "@/lib/offers-data";
-
-const ADMIN_STATUS_STYLE: Record<AdminOffer["status"], string> = {
-  Active: "bg-[#0ca30c]/10 text-[#006300] dark:text-[#0ca30c]",
-  Scheduled: "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400",
-  Expired: "bg-zinc-100 text-zinc-400 line-through dark:bg-zinc-900 dark:text-zinc-600",
-};
 
 function OfferCard({ offer }: { offer: (typeof activeOffers)[number] }) {
   const [copied, setCopied] = useState(false);
@@ -76,10 +70,31 @@ function CustomerOfferZone() {
   );
 }
 
+type StatusFilter = "All" | AdminOffer["status"];
+const STATUS_FILTERS: StatusFilter[] = ["All", "Active", "Scheduled", "Expired"];
+
+const STATUS_DOT: Record<AdminOffer["status"], string> = {
+  Active: "bg-[#0ca30c]",
+  Scheduled: "bg-amber-500",
+  Expired: "bg-zinc-400",
+};
+
 function AdminOfferZone() {
-  const activeCount = adminOffers.filter((o) => o.status === "Active").length;
+  const [filter, setFilter] = useState<StatusFilter>("All");
+  const [query, setQuery] = useState("");
+
+  const countOf = (s: StatusFilter) =>
+    s === "All" ? adminOffers.length : adminOffers.filter((o) => o.status === s).length;
   const totalRedemptions = adminOffers.reduce((sum, o) => sum + o.redemptions, 0);
-  const scheduledCount = adminOffers.filter((o) => o.status === "Scheduled").length;
+  const maxRedemptions = Math.max(...adminOffers.map((o) => o.redemptions), 1);
+  const topOffer = adminOffers.reduce((a, b) => (b.redemptions > a.redemptions ? b : a));
+
+  const q = query.trim().toLowerCase();
+  const rows = adminOffers.filter(
+    (o) =>
+      (filter === "All" || o.status === filter) &&
+      (!q || o.code.toLowerCase().includes(q) || o.description.toLowerCase().includes(q)),
+  );
 
   return (
     <PageContainer
@@ -87,32 +102,110 @@ function AdminOfferZone() {
       title="Offer zone"
       description="Manage promotional codes across the storefront. Data shown is illustrative."
     >
-      <StatGrid
-        stats={[
-          { label: "Active offers", value: activeCount },
-          { label: "Total redemptions", value: totalRedemptions.toLocaleString() },
-          { label: "Scheduled", value: scheduledCount },
-        ]}
-      />
+      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard label="Active offers" value={countOf("Active")} />
+        <StatCard label="Scheduled" value={countOf("Scheduled")} />
+        <StatCard label="Total redemptions" value={totalRedemptions.toLocaleString()} />
+        <StatCard
+          label="Top performer"
+          value={<span className="font-mono text-lg">{topOffer.code}</span>}
+          footer={
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              {topOffer.redemptions.toLocaleString()} redemptions
+            </p>
+          }
+        />
+      </div>
 
-      <DataTable
-        rows={adminOffers}
-        rowKey={(o) => o.code}
-        columns={[
-          {
-            header: "Code",
-            render: (o) => <span className="font-mono text-xs font-medium">{o.code}</span>,
-          },
-          { header: "Description", render: (o) => o.description, muted: true },
-          { header: "Discount", render: (o) => o.discount, muted: true },
-          {
-            header: "Status",
-            render: (o) => <Badge className={ADMIN_STATUS_STYLE[o.status]}>{o.status}</Badge>,
-          },
-          { header: "Redemptions", render: (o) => o.redemptions.toLocaleString(), numeric: true },
-          { header: "Expires", render: (o) => o.expires, muted: true, numeric: true },
-        ]}
-      />
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Filter by status">
+          {STATUS_FILTERS.map((s) => {
+            const selected = filter === s;
+            return (
+              <button
+                key={s}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                onClick={() => setFilter(s)}
+                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                  selected
+                    ? "bg-black text-white dark:bg-white dark:text-black"
+                    : "border border-zinc-200 text-zinc-600 hover:border-zinc-400 dark:border-zinc-800 dark:text-zinc-300"
+                }`}
+              >
+                {s} <span className="opacity-60">{countOf(s)}</span>
+              </button>
+            );
+          })}
+        </div>
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search code or description"
+          aria-label="Search offers"
+          className="w-full rounded-full border border-zinc-200 bg-transparent px-4 py-1.5 text-sm outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-500 dark:border-zinc-800 sm:w-64"
+        />
+      </div>
+
+      <div className="mt-4 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
+        <table className="w-full min-w-[640px] text-sm">
+          <thead>
+            <tr className="border-b border-zinc-200 bg-zinc-50 text-left text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+              <th className="px-4 py-3 font-medium">Offer</th>
+              <th className="px-4 py-3 font-medium">Discount</th>
+              <th className="px-4 py-3 font-medium">Status</th>
+              <th className="px-4 py-3 font-medium">Redemptions</th>
+              <th className="px-4 py-3 text-right font-medium">Expires</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((o) => (
+              <tr
+                key={o.code}
+                className="border-b border-zinc-100 transition-colors last:border-0 hover:bg-zinc-50 dark:border-zinc-900 dark:hover:bg-zinc-900/50"
+              >
+                <td className="px-4 py-3">
+                  <span className="font-mono text-xs font-semibold tracking-wide">{o.code}</span>
+                  <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">{o.description}</p>
+                </td>
+                <td className="px-4 py-3 font-medium">{o.discount}</td>
+                <td className="px-4 py-3">
+                  <span className="inline-flex items-center gap-2 text-xs font-medium">
+                    <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[o.status]}`} />
+                    {o.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="w-10 tabular-nums">{o.redemptions.toLocaleString()}</span>
+                    <div className="h-1.5 w-24 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                      <div
+                        className="h-full rounded-full bg-zinc-800 dark:bg-zinc-200"
+                        style={{ width: `${(o.redemptions / maxRedemptions) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-right tabular-nums text-zinc-600 dark:text-zinc-300">
+                  {o.expires}
+                </td>
+              </tr>
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-4 py-10 text-center text-sm text-zinc-500">
+                  No offers match your filters.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 text-xs text-zinc-400 dark:text-zinc-500">
+        Showing {rows.length} of {adminOffers.length} offers
+      </p>
     </PageContainer>
   );
 }
