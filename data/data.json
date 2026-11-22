@@ -4,31 +4,31 @@
       "id": 1,
       "name": "Electronics",
       "slug": "electronics",
-      "image": "https://picsum.photos/seed/cat-electronics/600/600"
+      "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=600&h=600&q=80"
     },
     {
       "id": 2,
       "name": "Accessories",
       "slug": "accessories",
-      "image": "https://picsum.photos/seed/cat-accessories/600/600"
+      "image": "https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?auto=format&fit=crop&w=600&h=600&q=80"
     },
     {
       "id": 3,
       "name": "Footwear",
       "slug": "footwear",
-      "image": "https://picsum.photos/seed/cat-footwear/600/600"
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&h=600&q=80"
     },
     {
       "id": 4,
       "name": "Apparel",
       "slug": "apparel",
-      "image": "https://picsum.photos/seed/cat-apparel/600/600"
+      "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&h=600&q=80"
     },
     {
       "id": 5,
       "name": "Home",
       "slug": "home",
-      "image": "https://picsum.photos/seed/cat-home/600/600"
+      "image": "https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=600&h=600&q=80"
     }
   ],
   "products": [
@@ -38,8 +38,8 @@
       "slug": "aero-wireless-headphones",
       "price": 89.99,
       "description": "Over-ear wireless headphones with active noise cancellation, 30-hour battery life, and plush memory-foam ear cups for all-day comfort.",
-      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://picsum.photos/seed/cat-electronics/600/600" },
-      "images": ["https://picsum.photos/seed/aero-headphones/600/600"]
+      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 2,
@@ -47,8 +47,8 @@
       "slug": "pulse-smartwatch",
       "price": 129.0,
       "description": "Track workouts, sleep, and heart rate with a bright always-on display and up to 7 days of battery life.",
-      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://picsum.photos/seed/cat-electronics/600/600" },
-      "images": ["https://picsum.photos/seed/pulse-smartwatch/600/600"]
+      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 3,
@@ -56,8 +56,8 @@
       "slug": "everyday-canvas-backpack",
       "price": 54.5,
       "description": "A durable canvas backpack with a padded laptop sleeve, water-resistant coating, and room for a full day of essentials.",
-      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
-      "images": ["https://picsum.photos/seed/canvas-backpack/600/600"]
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 4,
@@ -65,8 +65,8 @@
       "slug": "minimalist-leather-wallet",
       "price": 32.0,
       "description": "Slim full-grain leather wallet with RFID-blocking card slots and a discreet cash pocket.",
-      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
-      "images": ["https://picsum.photos/seed/leather-wallet/600/600"]
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 5,
@@ -74,8 +74,8 @@
       "slug": "cloudline-running-shoes",
       "price": 74.99,
       "description": "Lightweight running shoes with responsive cushioning and a breathable knit upper built for daily miles.",
-      "category": { "id": 3, "name": "Footwear", "slug": "footwear", "image": "https://picsum.photos/seed/cat-footwear/600/600" },
-      "images": ["https://picsum.photos/seed/running-shoes/600/600"]
+      "category": { "id": 3, "name": "Footwear", "slug": "footwear", "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 6,
@@ -83,8 +83,8 @@
       "slug": "classic-denim-jacket",
       "price": 68.0,
       "description": "A timeless mid-wash denim jacket with a relaxed fit, button front, and durable stitching.",
-      "category": { "id": 4, "name": "Apparel", "slug": "apparel", "image": "https://picsum.photos/seed/cat-apparel/600/600" },
-      "images": ["https://picsum.photos/seed/denim-jacket/600/600"]
+      "category": { "id": 4, "name": "Apparel", "slug": "apparel", "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 7,
@@ -92,8 +92,8 @@
       "slug": "ceramic-pour-over-coffee-set",
       "price": 42.75,
       "description": "A hand-glazed ceramic dripper and mug set for slow, flavorful mornings. Dishwasher safe.",
-      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://picsum.photos/seed/cat-home/600/600" },
-      "images": ["https://picsum.photos/seed/coffee-set/600/600"]
+      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 8,
@@ -101,8 +101,8 @@
       "slug": "tabletop-succulent-trio",
       "price": 24.99,
       "description": "Three low-maintenance succulents in matching matte ceramic pots, ready to brighten any desk or shelf.",
-      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://picsum.photos/seed/cat-home/600/600" },
-      "images": ["https://picsum.photos/seed/succulent-trio/600/600"]
+      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 9,
@@ -110,8 +110,8 @@
       "slug": "portable-bluetooth-speaker",
       "price": 39.99,
       "description": "Pocket-sized speaker with surprisingly big sound, IPX7 waterproofing, and 12 hours of playtime.",
-      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://picsum.photos/seed/cat-electronics/600/600" },
-      "images": ["https://picsum.photos/seed/bt-speaker/600/600"]
+      "category": { "id": 1, "name": "Electronics", "slug": "electronics", "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 10,
@@ -119,8 +119,8 @@
       "slug": "recycled-wool-throw-blanket",
       "price": 58.0,
       "description": "A soft, warm throw woven from recycled wool blend, finished with fringe edges in a herringbone pattern.",
-      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://picsum.photos/seed/cat-home/600/600" },
-      "images": ["https://picsum.photos/seed/wool-blanket/600/600"]
+      "category": { "id": 5, "name": "Home", "slug": "home", "image": "https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1580301762395-21ce84d00bc6?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 11,
@@ -128,8 +128,8 @@
       "slug": "trail-ready-sunglasses",
       "price": 45.0,
       "description": "Polarized lenses with a lightweight, flexible frame built to handle hikes, runs, and everything in between.",
-      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
-      "images": ["https://picsum.photos/seed/sunglasses/600/600"]
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=600&h=600&q=80"]
     },
     {
       "id": 12,
@@ -137,8 +137,8 @@
       "slug": "insulated-steel-water-bottle",
       "price": 27.5,
       "description": "Double-wall insulated bottle that keeps drinks cold for 24 hours or hot for 12. 750ml capacity.",
-      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://picsum.photos/seed/cat-accessories/600/600" },
-      "images": ["https://picsum.photos/seed/water-bottle/600/600"]
+      "category": { "id": 2, "name": "Accessories", "slug": "accessories", "image": "https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?auto=format&fit=crop&w=600&h=600&q=80" },
+      "images": ["https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&h=600&q=80"]
     }
   ]
 }
