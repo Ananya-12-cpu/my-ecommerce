@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useCart } from "@/lib/cart-context";
+import AddToCartButton from "@/components/AddToCartButton";
 import { useWishlist } from "@/lib/wishlist-context";
 
 export default function WishlistPage() {
@@ -16,8 +16,6 @@ export default function WishlistPage() {
       setRemoving((r) => r.filter((x) => x !== id));
     }, 300);
   }
-  const { addItem } = useCart();
-
   if (items.length === 0) {
     return (
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
@@ -66,12 +64,14 @@ export default function WishlistPage() {
                 ${item.price.toFixed(2)}
               </p>
             </div>
-            <button
-              onClick={() => addItem(item)}
-              className="rounded-full bg-black px-4 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
-            >
-              Add to cart
-            </button>
+            <div className="w-32 shrink-0">
+              <AddToCartButton
+                id={item.id}
+                title={item.title}
+                price={item.price}
+                image={item.image}
+              />
+            </div>
             <button
               onClick={() => handleRemove(item.id)}
               className="text-sm text-zinc-400 hover:text-red-500"
