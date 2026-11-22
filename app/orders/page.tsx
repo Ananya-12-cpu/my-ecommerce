@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { EmptyState, PageContainer } from "@/components/ui";
 import { useOrders } from "@/lib/orders-context";
 import { useAuth } from "@/lib/auth-context";
 
@@ -13,41 +13,28 @@ export default function OrdersPage() {
 
   if (!user) {
     return (
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
-        <h1 className="text-2xl font-semibold">Please log in</h1>
-        <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Log in to see your orders.
-        </p>
-        <Link
-          href="/login"
-          className="mt-6 rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
-        >
-          Log in
-        </Link>
-      </div>
+      <EmptyState
+        title="Please log in"
+        description="Log in to see your orders."
+        actionLabel="Log in"
+        actionHref="/login"
+      />
     );
   }
 
   if (orders.length === 0) {
     return (
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
-        <h1 className="text-2xl font-semibold">No orders yet</h1>
-        <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Your placed orders will show up here.
-        </p>
-        <Link
-          href="/"
-          className="mt-6 rounded-full bg-black px-6 py-3 text-sm font-medium text-white dark:bg-white dark:text-black"
-        >
-          Continue shopping
-        </Link>
-      </div>
+      <EmptyState
+        title="No orders yet"
+        description="Your placed orders will show up here."
+        actionLabel="Continue shopping"
+        actionHref="/"
+      />
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
-      <h1 className="mb-8 text-2xl font-semibold tracking-tight">Your orders</h1>
+    <PageContainer title="Your orders">
 
       <ul className="stagger flex flex-col gap-6">
         {orders.map((order) => (
@@ -89,6 +76,6 @@ export default function OrdersPage() {
           </li>
         ))}
       </ul>
-    </div>
+    </PageContainer>
   );
 }

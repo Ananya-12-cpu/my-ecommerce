@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
+import { Badge, DataTable, PageContainer, StatGrid } from "@/components/ui";
 import { useAuth } from "@/lib/auth-context";
 import { activeOffers, adminOffers, type AdminOffer } from "@/lib/offers-data";
 
@@ -81,62 +82,38 @@ function AdminOfferZone() {
   const scheduledCount = adminOffers.filter((o) => o.status === "Scheduled").length;
 
   return (
-    <div className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Offer zone</h1>
-      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-        Manage promotional codes across the storefront. Data shown is illustrative.
-      </p>
+    <PageContainer
+      width="lg"
+      title="Offer zone"
+      description="Manage promotional codes across the storefront. Data shown is illustrative."
+    >
+      <StatGrid
+        stats={[
+          { label: "Active offers", value: activeCount },
+          { label: "Total redemptions", value: totalRedemptions.toLocaleString() },
+          { label: "Scheduled", value: scheduledCount },
+        ]}
+      />
 
-      <div className="stagger mt-8 grid grid-cols-3 gap-4">
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Active offers</p>
-          <p className="mt-2 text-2xl font-semibold">{activeCount}</p>
-        </div>
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Total redemptions</p>
-          <p className="mt-2 text-2xl font-semibold">{totalRedemptions.toLocaleString()}</p>
-        </div>
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Scheduled</p>
-          <p className="mt-2 text-2xl font-semibold">{scheduledCount}</p>
-        </div>
-      </div>
-
-      <div className="mt-6 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-zinc-200 bg-zinc-50 text-left text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-              <th className="px-4 py-3 font-medium">Code</th>
-              <th className="px-4 py-3 font-medium">Description</th>
-              <th className="px-4 py-3 font-medium">Discount</th>
-              <th className="px-4 py-3 font-medium">Status</th>
-              <th className="px-4 py-3 font-medium tabular-nums">Redemptions</th>
-              <th className="px-4 py-3 font-medium">Expires</th>
-            </tr>
-          </thead>
-          <tbody>
-            {adminOffers.map((o) => (
-              <tr key={o.code} className="border-b border-zinc-100 last:border-0 dark:border-zinc-900">
-                <td className="px-4 py-3 font-mono text-xs font-medium">{o.code}</td>
-                <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">{o.description}</td>
-                <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">{o.discount}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${ADMIN_STATUS_STYLE[o.status]}`}
-                  >
-                    {o.status}
-                  </span>
-                </td>
-                <td className="px-4 py-3 tabular-nums">{o.redemptions.toLocaleString()}</td>
-                <td className="px-4 py-3 tabular-nums text-zinc-600 dark:text-zinc-300">
-                  {o.expires}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <DataTable
+        rows={adminOffers}
+        rowKey={(o) => o.code}
+        columns={[
+          {
+            header: "Code",
+            render: (o) => <span className="font-mono text-xs font-medium">{o.code}</span>,
+          },
+          { header: "Description", render: (o) => o.description, muted: true },
+          { header: "Discount", render: (o) => o.discount, muted: true },
+          {
+            header: "Status",
+            render: (o) => <Badge className={ADMIN_STATUS_STYLE[o.status]}>{o.status}</Badge>,
+          },
+          { header: "Redemptions", render: (o) => o.redemptions.toLocaleString(), numeric: true },
+          { header: "Expires", render: (o) => o.expires, muted: true, numeric: true },
+        ]}
+      />
+    </PageContainer>
   );
 }
 

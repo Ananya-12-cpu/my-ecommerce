@@ -1,117 +1,77 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Button,
+  EmptyState,
+  ItemRow,
+  PageContainer,
+  QuantityStepper,
+  useAnimatedRemove,
+} from "@/components/ui";
 import { useCart } from "@/lib/cart-context";
 
 export default function CartPage() {
   const router = useRouter();
-  const [removing, setRemoving] = useState<number[]>([]);
-
-  function handleRemove(id: number) {
-    setRemoving((r) => [...r, id]);
-    setTimeout(() => {
-      removeItem(id);
-      setRemoving((r) => r.filter((x) => x !== id));
-    }, 300);
-  }
   const { items, removeItem, updateQuantity, totalPrice, clearCart } =
     useCart();
+  const { removing, remove } = useAnimatedRemove(removeItem);
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
-        <h1 className="text-2xl font-semibold">Your cart is empty</h1>
-        <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-          Browse the shop and add something you like.
-        </p>
-        <Link
-          href="/"
-          className="mt-6 rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
-        >
-          Continue shopping
-        </Link>
-      </div>
+      <EmptyState
+        title="Your cart is empty"
+        description="Browse the shop and add something you like."
+        actionLabel="Continue shopping"
+        actionHref="/"
+      />
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
-      <h1 className="mb-8 text-2xl font-semibold tracking-tight">Your cart</h1>
-
+    <PageContainer title="Your cart">
       <ul className="stagger flex flex-col gap-4">
         {items.map((item) => (
-          <li
+          <ItemRow
             key={item.id}
-            className={`flex items-center gap-4 rounded-lg border border-zinc-200 p-4 transition-shadow hover:shadow-md dark:border-zinc-800 ${removing.includes(item.id) ? "animate-slide-out" : ""}`}
+            {...item}
+            removing={removing.includes(item.id)}
+            onRemove={() => remove(item.id)}
+            removeLabel="Remove item"
           >
-            <Link href={`/products/${item.id}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-20 w-20 rounded-md object-cover"
-              />
-            </Link>
-            <div className="flex-1">
-              <Link href={`/products/${item.id}`} className="font-medium hover:underline">
-                {item.title}
-              </Link>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                ${item.price.toFixed(2)}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                className="h-8 w-8 rounded-full border border-zinc-300 hover:border-zinc-500 dark:border-zinc-700"
-                aria-label="Decrease quantity"
-              >
-                −
-              </button>
-              <span key={item.quantity} className="animate-bump inline-block w-6 text-center">{item.quantity}</span>
-              <button
-                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                className="h-8 w-8 rounded-full border border-zinc-300 hover:border-zinc-500 dark:border-zinc-700"
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
-            </div>
-            <p key={item.quantity} className="animate-bump w-20 text-right font-medium">
+            <QuantityStepper
+              value={item.quantity}
+              onChange={(q) => updateQuantity(item.id, q)}
+            />
+            <p
+              key={item.quantity}
+              className="animate-bump w-20 text-right font-medium"
+            >
               ${(item.price * item.quantity).toFixed(2)}
             </p>
-            <button
-              onClick={() => handleRemove(item.id)}
-              className="text-sm text-zinc-400 hover:text-red-500"
-              aria-label="Remove item"
-            >
-              Remove
-            </button>
-          </li>
+          </ItemRow>
         ))}
       </ul>
 
       <div className="mt-8 flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800">
-        <button
-          onClick={clearCart}
-          className="text-sm text-zinc-500 hover:text-red-500 dark:text-zinc-400"
-        >
+        <Button variant="danger-ghost" size="sm" onClick={clearCart}>
           Clear cart
-        </button>
+        </Button>
         <div className="text-right">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">Total</p>
-          <p key={totalPrice} className="animate-bump text-2xl font-semibold">${totalPrice.toFixed(2)}</p>
+          <p key={totalPrice} className="animate-bump text-2xl font-semibold">
+            ${totalPrice.toFixed(2)}
+          </p>
         </div>
       </div>
 
-      <button
+      <Button
+        fullWidth
         onClick={() => router.push("/checkout")}
-        className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
+        className="mt-6"
       >
         Checkout
-      </button>
-    </div>
+      </Button>
+    </PageContainer>
   );
 }

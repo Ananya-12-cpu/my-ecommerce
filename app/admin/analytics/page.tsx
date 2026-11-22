@@ -1,6 +1,7 @@
 "use client";
 
 import AdminGuard from "@/components/AdminGuard";
+import { StatCard } from "@/components/ui";
 import {
   kpis,
   monthlyRevenue,
@@ -31,14 +32,16 @@ function StatTile({ label, value, delta, deltaLabel, trend }: Kpi) {
       : "text-[#d03b3b] dark:text-[#e66767]";
 
   return (
-    <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">{label}</p>
-      <p className="mt-2 text-2xl font-semibold">{value}</p>
-      <p className={`mt-1 flex items-center gap-1 text-xs font-medium ${deltaColor}`}>
-        <span aria-hidden>{up ? "▲" : "▼"}</span>
-        {Math.abs(delta)}% {deltaLabel}
-      </p>
-    </div>
+    <StatCard
+      label={label}
+      value={value}
+      footer={
+        <p className={`mt-1 flex items-center gap-1 text-xs font-medium ${deltaColor}`}>
+          <span aria-hidden>{up ? "▲" : "▼"}</span>
+          {Math.abs(delta)}% {deltaLabel}
+        </p>
+      }
+    />
   );
 }
 
