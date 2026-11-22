@@ -160,5 +160,19 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 3px rgb(113 113 122 / 0.25);
 }
 
+/* Checkmark stroke draw for success states. */
+@keyframes draw-check {
+  from { stroke-dashoffset: 30; }
+  to   { stroke-dashoffset: 0; }
+}
+.animate-draw-check {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: draw-check 0.45s ease-out 0.25s forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-draw-check { animation-duration: 0.01s; animation-delay: 0s; }
+}
+
 /* Fade-in overlay for modals. */
 .animate-overlay { animation: fade-in 0.2s ease-out both; }

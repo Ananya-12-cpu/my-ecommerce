@@ -292,21 +292,62 @@ export default function CheckoutPage() {
       </div>
 
       {paid && (
-        <div className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6">
-          <div className="animate-scale-in w-full max-w-sm rounded-xl bg-white p-8 text-center dark:bg-zinc-900">
-            <div className="animate-scale-in animate-pulse-ring mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-3xl text-green-600 dark:bg-green-900/40 dark:text-green-400">
-              ✓
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="payment-success-title"
+          className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm"
+        >
+          <div className="animate-scale-in relative w-full max-w-md overflow-hidden rounded-2xl bg-white text-center shadow-2xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10">
+            <div className="h-1.5 w-full bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500" />
+
+            <div className="px-8 pb-8 pt-9">
+              <div className="animate-scale-in animate-pulse-ring mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-600 ring-8 ring-green-50 dark:bg-green-900/40 dark:text-green-400 dark:ring-green-900/20">
+                <svg viewBox="0 0 24 24" className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 12.5l4.5 4.5L19 7.5" className="animate-draw-check" />
+                </svg>
+              </div>
+
+              <h2 id="payment-success-title" className="text-2xl font-semibold tracking-tight">
+                {method === "cod" ? "Order placed!" : "Payment successful"}
+              </h2>
+              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Thank you for your purchase. We&apos;ve received your order and are getting it ready.
+              </p>
+
+              <dl className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-zinc-50 text-sm dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-950">
+                <div className="flex items-center justify-between px-4 py-3">
+                  <dt className="text-zinc-500 dark:text-zinc-400">Payment method</dt>
+                  <dd className="flex items-center gap-2 font-medium">
+                    <span aria-hidden>{selected?.icon}</span>
+                    {selected?.label}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between px-4 py-3">
+                  <dt className="text-zinc-500 dark:text-zinc-400">Status</dt>
+                  <dd className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                    {method === "cod" ? "Pay on delivery" : "Paid"}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="mt-7 flex flex-col gap-2.5">
+                <button
+                  onClick={goToOrders}
+                  autoFocus
+                  className="w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:focus-visible:outline-white"
+                >
+                  View my orders
+                </button>
+                <button
+                  onClick={() => router.push("/")}
+                  className="w-full rounded-full px-6 py-3 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                >
+                  Continue shopping
+                </button>
+              </div>
             </div>
-            <h2 className="text-xl font-semibold">Payment successful</h2>
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-              Your order has been placed and paid via {selected?.label}.
-            </p>
-            <button
-              onClick={goToOrders}
-              className="mt-6 w-full rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:shadow-lg dark:bg-white dark:text-black"
-            >
-              View orders
-            </button>
           </div>
         </div>
       )}
