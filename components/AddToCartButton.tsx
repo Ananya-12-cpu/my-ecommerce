@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 
 const buttonClass =
-  "w-full rounded-full bg-black px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200";
+  "block w-full rounded-full bg-black px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200";
 
 export default function AddToCartButton({
   id,
