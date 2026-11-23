@@ -14,8 +14,11 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [attempts, setAttempts] = useState(0);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const [successRole, setSuccessRole] = useState<string | null>(null);
+
+  function submitCredentials(email: string, password: string, role?: string) {
+    setEmail(email);
+    setPassword(password);
     const result = login(email, password);
 
     if (!result.success) {
@@ -25,7 +28,13 @@ export default function LoginPage() {
     }
 
     setError(null);
-    router.push("/");
+    setSuccessRole(role ?? "User");
+    setTimeout(() => router.push("/"), 1900);
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    submitCredentials(email, password);
   }
 
   return (
@@ -35,7 +44,26 @@ export default function LoginPage() {
         Use your admin or customer account to continue.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
+      <div className="mt-8 grid grid-cols-2 gap-3">
+        <button
+          type="button"
+          disabled={!!successRole}
+          onClick={() => submitCredentials("ananya@gmail.com", "123456", "Customer")}
+          className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium transition-transform hover:bg-zinc-100 active:scale-95 disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          Login as Customer
+        </button>
+        <button
+          type="button"
+          disabled={!!successRole}
+          onClick={() => submitCredentials("admin@gmail.com", "123456", "Admin")}
+          className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium transition-transform hover:bg-zinc-100 active:scale-95 disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          Login as Admin
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         <FormField
           id="email"
           label="Email"
@@ -71,6 +99,49 @@ export default function LoginPage() {
       >
         ← Back to shop
       </Link>
+
+      {successRole && (
+        <>
+          {/* Toast */}
+          <div
+            role="status"
+            className="animate-toast-in fixed right-4 top-4 z-[60] w-72 overflow-hidden rounded-lg bg-white shadow-xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10"
+          >
+            <div className="flex items-center gap-3 p-4">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400">
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12.5l4.5 4.5L19 7.5" className="animate-draw-check" />
+                </svg>
+              </span>
+              <div className="text-sm">
+                <p className="font-semibold">Logged in successfully</p>
+                <p className="text-zinc-500 dark:text-zinc-400">Signed in as {successRole}</p>
+              </div>
+            </div>
+            <div className="toast-progress h-1 bg-green-500" />
+          </div>
+
+          {/* Success overlay */}
+          <div className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 backdrop-blur-md">
+            <div className="animate-card-in w-72 rounded-2xl bg-white p-8 text-center shadow-2xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10">
+              <div className="relative mx-auto h-16 w-16">
+                <span className="ripple absolute inset-0 rounded-full bg-green-500" />
+                <svg viewBox="0 0 64 64" className="relative h-16 w-16 text-green-500" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="32" cy="32" r="26" className="ring-draw" transform="rotate(-90 32 32)" />
+                  <path d="M21 33l8 8 14-16" className="animate-draw-check" style={{ animationDelay: "0.55s" }} />
+                </svg>
+              </div>
+              <p className="rise mt-5 text-lg font-semibold tracking-tight" style={{ animationDelay: "0.5s" }}>Welcome back</p>
+              <p className="rise mt-1 text-sm text-zinc-500 dark:text-zinc-400" style={{ animationDelay: "0.65s" }}>
+                Signing you in as {successRole}…
+              </p>
+              <div className="mt-6 h-1 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
+                <div className="bar-fill h-full rounded-full bg-green-500" />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

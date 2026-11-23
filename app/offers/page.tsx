@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import AuthGuard from "@/components/AuthGuard";
+import { getProductImage, getProducts } from "@/lib/api";
+import type { Product } from "@/lib/types";
 import { PageContainer, StatCard } from "@/components/ui";
 import { useAuth } from "@/lib/auth-context";
 import { activeOffers, adminOffers, type AdminOffer } from "@/lib/offers-data";
@@ -48,24 +51,98 @@ function OfferCard({ offer }: { offer: (typeof activeOffers)[number] }) {
   );
 }
 
-function CustomerOfferZone() {
+const DISCOUNT_PERCENTS = [25, 30, 25, 25, 20, 15, 30, 10];
+
+function DiscountCard({ product, percent }: { product: Product; percent: number }) {
+  const original = product.price;
+  const sale = original * (1 - percent / 100);
+
   return (
-    <div className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
-      <div className="rounded-lg bg-black px-6 py-8 text-white dark:bg-white dark:text-black">
-        <p className="text-xs font-medium uppercase tracking-wide opacity-70">Offer zone</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-          Deals picked for you
-        </h1>
-        <p className="mt-1 text-sm opacity-80">
-          Apply a code at checkout. New offers drop regularly.
-        </p>
+    <div className="group relative flex flex-col items-center overflow-hidden rounded-2xl bg-[#e6e6e6] pb-7 text-center text-black transition-transform duration-300 hover:-translate-y-1">
+      <div
+        className="absolute left-5 top-5 z-10 flex h-[90px] w-[90px] items-center justify-center rounded-full p-[2px]"
+        style={{ background: "linear-gradient(135deg, #f472b6, #a3e635)" }}
+      >
+        <div className="flex h-full w-full flex-col items-center justify-center rounded-full bg-[#111] text-lg font-semibold leading-[1.05]">
+          <span className="bg-gradient-to-b from-pink-400 to-amber-300 bg-clip-text text-transparent">
+            {percent}%
+          </span>
+          <span className="bg-gradient-to-b from-pink-300 to-amber-300 bg-clip-text text-transparent">
+            OFF
+          </span>
+        </div>
       </div>
 
-      <div className="stagger mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {activeOffers.map((offer) => (
-          <OfferCard key={offer.code} offer={offer} />
-        ))}
+      <div className="aspect-[4/3.4] w-full overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={getProductImage(product.images)}
+          alt={product.title}
+          className="h-full w-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+        />
       </div>
+
+      <h3 className="mt-6 line-clamp-2 min-h-[3.25rem] px-4 text-xl font-medium leading-tight tracking-tight">
+        {product.title}
+      </h3>
+      <p className="mt-2 text-sm">
+        <span className="mr-2 text-zinc-400 line-through">${original.toFixed(2)}</span>
+        <span className="font-medium">${sale.toFixed(2)}</span>
+      </p>
+      <Link
+        href={`/products/${product.id}`}
+        className="mt-5 rounded-full bg-[#2f2bf0] px-5 py-2 text-xs font-medium uppercase tracking-wide text-white transition-colors hover:bg-[#1f1bd0]"
+      >
+        Shop now →
+      </Link>
+    </div>
+  );
+}
+
+function CustomerOfferZone() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    getProducts({ limit: DISCOUNT_PERCENTS.length }).then(setProducts);
+  }, []);
+
+  const visible = showAll ? products : products.slice(0, 4);
+
+  return (
+    <div className="flex-1 bg-[#161616]">
+      <section className="mx-auto w-full max-w-7xl px-6 py-16">
+        <div className="flex items-end justify-between gap-4">
+          <h1 className="text-4xl font-light tracking-tight text-white sm:text-6xl">
+            Featured discounts
+          </h1>
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="shrink-0 text-sm uppercase tracking-wide text-[#6fd44f] hover:underline"
+          >
+            {showAll ? "Show less ↑" : "View all discounts →"}
+          </button>
+        </div>
+
+        <div className="stagger mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {visible.map((product, i) => (
+            <DiscountCard key={product.id} product={product} percent={DISCOUNT_PERCENTS[i]} />
+          ))}
+        </div>
+
+        <h2 className="mt-20 text-2xl font-light tracking-tight text-white">
+          Promo codes
+        </h2>
+        <p className="mt-1 text-sm text-zinc-400">
+          Apply a code at checkout. New offers drop regularly.
+        </p>
+        <div className="stagger mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {activeOffers.map((offer) => (
+            <OfferCard key={offer.code} offer={offer} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
