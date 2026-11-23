@@ -23,7 +23,7 @@ function percentOf(discount: string) {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-zinc-400 focus:border-black dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-white";
+  "w-full rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-base outline-none transition-colors sm:text-sm placeholder:text-zinc-400 focus:border-black dark:border-zinc-700 dark:bg-zinc-950 dark:focus:border-white";
 const labelClass = "mb-1.5 block text-xs font-medium text-zinc-600 dark:text-zinc-400";
 
 function formatCardNumber(v: string) {
@@ -122,15 +122,15 @@ export default function CheckoutPage() {
   const selected = PAYMENT_METHODS.find((m) => m.id === method);
 
   return (
-    <div className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
-      <div className="mb-8">
+    <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:px-6 sm:py-10">
+      <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl font-semibold tracking-tight">Checkout</h1>
         <p className="mt-1 flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400">
           <span aria-hidden>🔒</span> Secure payment · Your details are encrypted
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+      <div className="grid gap-6 sm:gap-8 lg:grid-cols-[1fr_380px]">
         {/* Payment column */}
         <section>
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
@@ -395,12 +395,12 @@ export default function CheckoutPage() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="payment-success-title"
-          className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm"
+          className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm sm:px-6"
         >
           <div className="animate-scale-in relative w-full max-w-md overflow-hidden rounded-2xl bg-white text-center shadow-2xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10">
             <div className="h-1.5 w-full bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500" />
 
-            <div className="px-8 pb-8 pt-9">
+            <div className="px-5 pb-6 pt-8 sm:px-8 sm:pb-8 sm:pt-9">
               <div className="animate-scale-in animate-pulse-ring mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-600 ring-8 ring-green-50 dark:bg-green-900/40 dark:text-green-400 dark:ring-green-900/20">
                 <svg viewBox="0 0 24 24" className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M5 12.5l4.5 4.5L19 7.5" className="animate-draw-check" />

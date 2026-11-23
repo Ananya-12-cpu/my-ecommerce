@@ -92,10 +92,10 @@ export default async function ShopPage({
         <SortSelect value={sort} />
       </div>
 
-      <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
-        <div className="flex flex-col gap-8 sm:w-56 sm:shrink-0">
+      <div className="flex flex-col gap-4 md:flex-row md:gap-8">
+        <div className="flex flex-col gap-8 md:w-56 md:shrink-0">
           <CategoryFilter categories={categories} activeCategoryId={categoryId} />
-          <div className="hidden min-h-96 flex-1 flex-col gap-4 sm:flex">
+          <div className="hidden min-h-96 flex-1 flex-col gap-4 md:flex">
             {PROMOS.map((promo) => (
               <Link
                 key={promo.title}

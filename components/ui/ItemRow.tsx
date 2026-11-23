@@ -43,18 +43,18 @@ export default function ItemRow({
 }) {
   return (
     <li
-      className={`flex items-center gap-4 rounded-lg border border-zinc-200 p-4 transition-shadow hover:shadow-md dark:border-zinc-800 ${removing ? "animate-slide-out" : ""}`}
+      className={`flex flex-wrap items-center gap-x-4 gap-y-3 rounded-lg border border-zinc-200 p-3 transition-shadow sm:p-4 hover:shadow-md dark:border-zinc-800 ${removing ? "animate-slide-out" : ""}`}
     >
       <Link href={`/products/${id}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={image}
           alt={title}
-          className="h-20 w-20 rounded-md object-cover"
+          className="h-16 w-16 rounded-md object-cover sm:h-20 sm:w-20"
         />
       </Link>
-      <div className="flex-1">
-        <Link href={`/products/${id}`} className="font-medium hover:underline">
+      <div className="min-w-0 flex-1 basis-32">
+        <Link href={`/products/${id}`} className="line-clamp-2 font-medium hover:underline">
           {title}
         </Link>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">

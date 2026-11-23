@@ -42,7 +42,7 @@ export default function OrdersPage() {
             key={order.id}
             className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
           >
-            <div className="mb-4 flex items-center justify-between border-b border-zinc-200 pb-3 dark:border-zinc-800">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-200 pb-3 dark:border-zinc-800">
               <div>
                 <p className="text-sm font-medium">Order #{order.id.slice(0, 8)}</p>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
@@ -59,10 +59,10 @@ export default function OrdersPage() {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="h-12 w-12 rounded-md object-cover"
+                    className="h-12 w-12 shrink-0 rounded-md object-cover"
                   />
-                  <div className="flex-1">
-                    <p className="text-sm">{item.title}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-sm">{item.title}</p>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">
                       Qty {item.quantity} × ${item.price.toFixed(2)}
                     </p>

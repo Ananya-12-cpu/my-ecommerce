@@ -64,7 +64,7 @@ function DeliveryLocationPicker() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-6 py-10">
+    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-6 sm:px-6 sm:py-10">
       <h1 className="text-2xl font-semibold tracking-tight">
         Set delivery location
       </h1>
@@ -72,7 +72,7 @@ function DeliveryLocationPicker() {
         Click anywhere on the map to drop a pin at your delivery address.
       </p>
 
-      <div className="mt-6 h-96 w-full overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
+      <div className="relative z-0 mt-6 h-72 w-full overflow-hidden sm:h-96 rounded-lg border border-zinc-200 dark:border-zinc-800">
         <LocationPickerMap
           position={pin ? [pin.lat, pin.lng] : null}
           onPick={handlePick}

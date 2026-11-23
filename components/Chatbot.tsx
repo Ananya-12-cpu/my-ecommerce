@@ -64,9 +64,9 @@ export default function Chatbot() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6 flex flex-col items-end">
       {isOpen && (
-        <div className="animate-pop-in mb-3 flex h-[32rem] w-80 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950 sm:w-96">
+        <div className="animate-pop-in mb-3 flex h-[32rem] max-h-[calc(100dvh-7rem)] w-[calc(100vw-2rem)] max-w-96 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950">
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
             <h2 className="text-sm font-semibold">Shopping Assistant</h2>
             <div className="flex items-center gap-3">
@@ -163,7 +163,7 @@ export default function Chatbot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="What are you looking for?"
-              className="flex-1 rounded-md border border-zinc-200 bg-transparent px-3 py-1.5 text-sm dark:border-zinc-800"
+              className="min-w-0 flex-1 rounded-md border border-zinc-200 bg-transparent px-3 py-1.5 text-base dark:border-zinc-800 sm:text-sm"
             />
             <button
               type="submit"

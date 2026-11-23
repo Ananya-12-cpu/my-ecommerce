@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes } from "react";
 
 export const inputClass =
-  "w-full rounded-md border border-zinc-300 bg-transparent px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:border-zinc-700";
+  "w-full rounded-md border border-zinc-300 bg-transparent px-3 py-2 text-base outline-none sm:text-sm focus:border-zinc-500 dark:border-zinc-700";
 
 export default function FormField({
   label,

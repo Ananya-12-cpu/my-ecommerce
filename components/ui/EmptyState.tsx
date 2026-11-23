@@ -16,7 +16,7 @@ export default function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 py-20 text-center">
+    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 py-16 text-center sm:px-6 sm:py-20">
       <h1 className="text-2xl font-semibold">{title}</h1>
       {description && (
         <p className="mt-2 text-zinc-500 dark:text-zinc-400">{description}</p>

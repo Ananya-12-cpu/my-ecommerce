@@ -111,8 +111,8 @@ function CustomerOfferZone() {
 
   return (
     <div className="flex-1 bg-[#161616]">
-      <section className="mx-auto w-full max-w-7xl px-6 py-16">
-        <div className="flex items-end justify-between gap-4">
+      <section className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-16">
+        <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <h1 className="text-4xl font-light tracking-tight text-white sm:text-6xl">
             Featured discounts
           </h1>
@@ -125,13 +125,13 @@ function CustomerOfferZone() {
           </button>
         </div>
 
-        <div className="stagger mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="stagger mt-8 grid grid-cols-1 gap-5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
           {visible.map((product, i) => (
             <DiscountCard key={product.id} product={product} percent={DISCOUNT_PERCENTS[i]} />
           ))}
         </div>
 
-        <h2 className="mt-20 text-2xl font-light tracking-tight text-white">
+        <h2 className="mt-14 text-2xl font-light sm:mt-20 tracking-tight text-white">
           Promo codes
         </h2>
         <p className="mt-1 text-sm text-zinc-400">

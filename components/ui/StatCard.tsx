@@ -39,7 +39,7 @@ export function StatGrid({
 }) {
   return (
     <div
-      className={`stagger mt-8 grid gap-4 ${columns === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3"}`}
+      className={`stagger mt-6 grid gap-3 sm:mt-8 sm:gap-4 ${columns === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-1 sm:grid-cols-3"}`}
     >
       {stats.map((s) => (
         <StatCard key={s.label} {...s} />

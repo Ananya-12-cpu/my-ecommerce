@@ -49,7 +49,7 @@ export default function ProductListItem({ product }: { product: Product }) {
           {product.description}
         </p>
 
-        <div className="mt-auto max-w-[200px] pt-2">
+        <div className="mt-auto w-full max-w-[200px] pt-2">
           <AddToCartButton
             id={product.id}
             title={product.title}

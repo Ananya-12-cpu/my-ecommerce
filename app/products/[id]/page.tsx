@@ -19,15 +19,15 @@ export default async function ProductPage({
   const image = getProductImage(product.images);
 
   return (
-    <div className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+    <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-10">
       <Link
         href="/"
-        className="mb-8 inline-block text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+        className="mb-5 inline-block text-sm sm:mb-8 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
       >
         &larr; Back to shop
       </Link>
 
-      <div className="grid gap-10 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 md:gap-10">
         <div className="aspect-square overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-900">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -49,7 +49,7 @@ export default async function ProductPage({
             {product.description}
           </p>
 
-          <div className="mt-4 flex max-w-xs flex-col gap-3">
+          <div className="mt-4 flex w-full max-w-xs flex-col gap-3">
             <AddToCartButton
               id={product.id}
               title={product.title}

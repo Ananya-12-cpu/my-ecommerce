@@ -38,13 +38,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-6 py-16">
+    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-10 sm:px-6 sm:py-16">
       <h1 className="text-2xl font-semibold tracking-tight">Log in</h1>
       <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
         Use your admin or customer account to continue.
       </p>
 
-      <div className="mt-8 grid grid-cols-2 gap-3">
+      <div className="mt-8 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
         <button
           type="button"
           disabled={!!successRole}
@@ -105,7 +105,7 @@ export default function LoginPage() {
           {/* Toast */}
           <div
             role="status"
-            className="animate-toast-in fixed right-4 top-4 z-[60] w-72 overflow-hidden rounded-lg bg-white shadow-xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10"
+            className="animate-toast-in fixed right-4 top-4 z-[60] w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg bg-white shadow-xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/10"
           >
             <div className="flex items-center gap-3 p-4">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400">

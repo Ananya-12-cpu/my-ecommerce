@@ -14,7 +14,7 @@ export default function PageContainer({
   children: ReactNode;
 }) {
   return (
-    <div className={`mx-auto w-full ${widths[width]} flex-1 px-6 py-10`}>
+    <div className={`mx-auto w-full ${widths[width]} flex-1 px-4 py-8 sm:px-6 sm:py-10`}>
       {title && (
         <h1
           className={`text-2xl font-semibold tracking-tight ${description ? "" : "mb-8"}`}

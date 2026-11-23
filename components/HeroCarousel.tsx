@@ -52,7 +52,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             aria-hidden={i !== index}
             className={`relative flex min-h-[280px] w-full shrink-0 items-center sm:min-h-[380px] lg:min-h-[440px] ${slide.gradient}`}
           >
-            <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-6 px-6 pb-24 pt-10 sm:px-12">
+            <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-6 px-10 pb-24 pt-10 sm:px-12">
               <div key={i === index ? "active" : "idle"} className={`max-w-xl text-white ${i === index ? "animate-slide-in-left" : ""}`}>
                 <p className="text-xs font-semibold uppercase tracking-widest text-white/80">
                   {slide.eyebrow}
@@ -91,7 +91,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             type="button"
             aria-label="Previous slide"
             onClick={() => go(index - 1)}
-            className="absolute left-2 top-[40%] -translate-y-1/2 rounded-md bg-black/25 px-3 py-6 text-2xl leading-none text-white backdrop-blur transition-colors hover:bg-black/50"
+            className="absolute left-1 top-[40%] -translate-y-1/2 rounded-md bg-black/25 px-2 py-4 text-xl sm:left-2 sm:px-3 sm:py-6 sm:text-2xl leading-none text-white backdrop-blur transition-colors hover:bg-black/50"
           >
             ‹
           </button>
@@ -99,7 +99,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             type="button"
             aria-label="Next slide"
             onClick={() => go(index + 1)}
-            className="absolute right-2 top-[40%] -translate-y-1/2 rounded-md bg-black/25 px-3 py-6 text-2xl leading-none text-white backdrop-blur transition-colors hover:bg-black/50"
+            className="absolute right-1 top-[40%] -translate-y-1/2 rounded-md bg-black/25 px-2 py-4 text-xl sm:right-2 sm:px-3 sm:py-6 sm:text-2xl leading-none text-white backdrop-blur transition-colors hover:bg-black/50"
           >
             ›
           </button>
