@@ -7,6 +7,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { useAuth } from "@/lib/auth-context";
 
 export interface WishlistItem {
   id: number;
@@ -23,25 +24,35 @@ interface WishlistContextValue {
 }
 
 const WishlistContext = createContext<WishlistContextValue | null>(null);
-const STORAGE_KEY = "wishlist";
 
-// Module-level store so wishlist state can be read via useSyncExternalStore
-// without ever calling setState from inside an effect.
-let items: WishlistItem[] = [];
+// Module-level store (one wishlist per logged-in user, plus a guest wishlist)
+// so state can be read via useSyncExternalStore without setState in an effect.
+const stores = new Map<string, WishlistItem[]>();
 let listeners: Array<() => void> = [];
 const EMPTY_ITEMS: WishlistItem[] = [];
 
-function readFromStorage(): WishlistItem[] {
+function storageKey(email: string | null | undefined) {
+  return email ? `wishlist:${email}` : "wishlist";
+}
+
+function readFromStorage(key: string): WishlistItem[] {
   if (typeof window === "undefined") return [];
   try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const stored = window.localStorage.getItem(key);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
   }
 }
 
-items = readFromStorage();
+function load(key: string): WishlistItem[] {
+  let value = stores.get(key);
+  if (!value) {
+    value = readFromStorage(key);
+    stores.set(key, value);
+  }
+  return value;
+}
 
 function subscribe(callback: () => void) {
   listeners.push(callback);
@@ -50,23 +61,26 @@ function subscribe(callback: () => void) {
   };
 }
 
-function getSnapshot() {
-  return items;
-}
-
 function getServerSnapshot() {
   return EMPTY_ITEMS;
 }
 
-function setItems(next: WishlistItem[]) {
-  items = next;
+function writeItems(key: string, next: WishlistItem[]) {
+  stores.set(key, next);
   if (typeof window !== "undefined") {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    window.localStorage.setItem(key, JSON.stringify(next));
   }
   listeners.forEach((listener) => listener());
 }
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  const key = storageKey(user?.email);
+  const getSnapshot = useCallback(() => load(key), [key]);
+  const setItems = useCallback(
+    (next: WishlistItem[]) => writeItems(key, next),
+    [key]
+  );
   const items = useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -87,14 +101,14 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         setItems([...items, item]);
       }
     },
-    [items]
+    [items, setItems]
   );
 
   const removeItem = useCallback(
     (id: number) => {
       setItems(items.filter((i) => i.id !== id));
     },
-    [items]
+    [items, setItems]
   );
 
   return (

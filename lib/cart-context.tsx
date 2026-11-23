@@ -8,6 +8,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { useAuth } from "@/lib/auth-context";
 
 export interface CartItem {
   id: number;
@@ -28,24 +29,34 @@ interface CartContextValue {
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
-const STORAGE_KEY = "cart";
 
-// Module-level store so cart state can be read via useSyncExternalStore
-// without ever calling setState from inside an effect.
-let items: CartItem[] = [];
+// Module-level store (one cart per logged-in user, plus a guest cart) so state
+// can be read via useSyncExternalStore without calling setState in an effect.
+const stores = new Map<string, CartItem[]>();
 let listeners: Array<() => void> = [];
 
-function readFromStorage(): CartItem[] {
+function storageKey(email: string | null | undefined) {
+  return email ? `cart:${email}` : "cart";
+}
+
+function readFromStorage(key: string): CartItem[] {
   if (typeof window === "undefined") return [];
   try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const stored = window.localStorage.getItem(key);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
   }
 }
 
-items = readFromStorage();
+function load(key: string): CartItem[] {
+  let value = stores.get(key);
+  if (!value) {
+    value = readFromStorage(key);
+    stores.set(key, value);
+  }
+  return value;
+}
 
 function subscribe(callback: () => void) {
   listeners.push(callback);
@@ -54,26 +65,26 @@ function subscribe(callback: () => void) {
   };
 }
 
-function getSnapshot() {
-  return items;
-}
-
 const EMPTY_SERVER_SNAPSHOT: CartItem[] = [];
 
 function getServerSnapshot() {
   return EMPTY_SERVER_SNAPSHOT;
 }
 
-function setItems(next: CartItem[]) {
-  items = next;
+function writeItems(key: string, next: CartItem[]) {
+  stores.set(key, next);
   if (typeof window !== "undefined") {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    window.localStorage.setItem(key, JSON.stringify(next));
   }
   listeners.forEach((listener) => listener());
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  const key = storageKey(user?.email);
+  const getSnapshot = useCallback(() => load(key), [key]);
   const items = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const setItems = useCallback((next: CartItem[]) => writeItems(key, next), [key]);
 
   const addItem: CartContextValue["addItem"] = useCallback(
     (item, quantity = 1) => {
@@ -88,14 +99,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems([...items, { ...item, quantity }]);
       }
     },
-    [items]
+    [items, setItems]
   );
 
   const removeItem = useCallback(
     (id: number) => {
       setItems(items.filter((i) => i.id !== id));
     },
-    [items]
+    [items, setItems]
   );
 
   const updateQuantity = useCallback(
@@ -106,10 +117,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       setItems(items.map((i) => (i.id === id ? { ...i, quantity } : i)));
     },
-    [items, removeItem]
+    [items, removeItem, setItems]
   );
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => setItems([]), [setItems]);
 
   const { totalItems, totalPrice } = useMemo(
     () => ({
