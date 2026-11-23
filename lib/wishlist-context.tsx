@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -86,6 +87,12 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     getSnapshot,
     getServerSnapshot
   );
+
+  useEffect(() => {
+    const onLogout = () => writeItems(storageKey(null), []);
+    window.addEventListener("auth:logout", onLogout);
+    return () => window.removeEventListener("auth:logout", onLogout);
+  }, []);
 
   const isWishlisted = useCallback(
     (id: number) => items.some((i) => i.id === id),

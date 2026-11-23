@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useSyncExternalStore,
   type ReactNode,
@@ -85,6 +86,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const getSnapshot = useCallback(() => load(key), [key]);
   const items = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const setItems = useCallback((next: CartItem[]) => writeItems(key, next), [key]);
+
+  useEffect(() => {
+    const onLogout = () => writeItems(storageKey(null), []);
+    window.addEventListener("auth:logout", onLogout);
+    return () => window.removeEventListener("auth:logout", onLogout);
+  }, []);
 
   const addItem: CartContextValue["addItem"] = useCallback(
     (item, quantity = 1) => {

@@ -105,6 +105,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoggingOut(true);
     setTimeout(() => {
       setUser(null);
+      // Let cart/wishlist reset their guest data so header counts drop to zero
+      window.dispatchEvent(new Event("auth:logout"));
       setLoggingOut(false);
     }, 1900);
   }, [loggingOut]);
