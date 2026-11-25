@@ -223,3 +223,36 @@ input:focus, textarea:focus, select:focus {
 @media (prefers-reduced-motion: reduce) {
   .ring-draw, .ripple, .rise, .animate-card-in, .animate-toast-in { animation-duration: 0.01s; animation-delay: 0s; }
 }
+
+/* ---------- Login page ---------- */
+
+@keyframes login-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-40px, 30px) scale(1.2); }
+}
+@keyframes login-float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(-5px) rotate(-6deg); }
+}
+@keyframes login-pass {
+  from { opacity: 0; transform: translateY(16px) rotate(-4deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(-1deg); }
+}
+.login-blob  { animation: login-blob 12s ease-in-out infinite; }
+.login-float { animation: login-float 4s ease-in-out infinite; }
+.login-pass  { animation: login-pass 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.login-dots {
+  background-image: radial-gradient(rgb(255 255 255 / 0.25) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+.login-barcode {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #18181b 0 2px, transparent 2px 5px,
+    #18181b 5px 9px, transparent 9px 11px,
+    #18181b 11px 12px, transparent 12px 17px
+  );
+}
+@media (prefers-reduced-motion: reduce) {
+  .login-blob, .login-float { animation: none; }
+}
