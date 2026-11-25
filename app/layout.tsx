@@ -8,6 +8,8 @@ import { DeliveryProvider } from "@/lib/delivery-context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
+import GuestGate from "@/components/GuestGate";
+import { LoginPromptProvider } from "@/components/LoginPrompt";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -41,10 +43,14 @@ export default function RootLayout({
             <OrdersProvider>
               <WishlistProvider>
                 <DeliveryProvider>
-                  <Header />
-                  <main className="flex flex-1 flex-col">{children}</main>
-                  <Footer />
-                  <Chatbot />
+                  <LoginPromptProvider>
+                    <Header />
+                    <main className="flex flex-1 flex-col">
+                      <GuestGate>{children}</GuestGate>
+                    </main>
+                    <Footer />
+                    <Chatbot />
+                  </LoginPromptProvider>
                 </DeliveryProvider>
               </WishlistProvider>
             </OrdersProvider>

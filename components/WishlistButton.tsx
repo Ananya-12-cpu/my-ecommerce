@@ -1,5 +1,7 @@
 "use client";
 
+import { useLoginPrompt } from "@/components/LoginPrompt";
+import { useAuth } from "@/lib/auth-context";
 import { useWishlist } from "@/lib/wishlist-context";
 
 export default function WishlistButton({
@@ -14,11 +16,15 @@ export default function WishlistButton({
   image: string;
 }) {
   const { isWishlisted, toggleItem } = useWishlist();
-  const wishlisted = isWishlisted(id);
+  const { user } = useAuth();
+  const showLoginPrompt = useLoginPrompt();
+  const wishlisted = !!user && isWishlisted(id);
 
   return (
     <button
-      onClick={() => toggleItem({ id, title, price, image })}
+      onClick={() =>
+        user ? toggleItem({ id, title, price, image }) : showLoginPrompt()
+      }
       aria-pressed={wishlisted}
       aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
       className={`flex w-full items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-medium transition-colors ${

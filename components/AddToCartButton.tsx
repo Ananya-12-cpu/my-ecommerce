@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useLoginPrompt } from "@/components/LoginPrompt";
+import { useAuth } from "@/lib/auth-context";
 import { useCart } from "@/lib/cart-context";
 
 const buttonClass =
@@ -18,7 +20,9 @@ export default function AddToCartButton({
   image: string;
 }) {
   const { items, addItem } = useCart();
-  const inCart = items.some((item) => item.id === id);
+  const { user } = useAuth();
+  const showLoginPrompt = useLoginPrompt();
+  const inCart = !!user && items.some((item) => item.id === id);
 
   if (inCart) {
     return (
@@ -30,7 +34,9 @@ export default function AddToCartButton({
 
   return (
     <button
-      onClick={() => addItem({ id, title, price, image })}
+      onClick={() =>
+        user ? addItem({ id, title, price, image }) : showLoginPrompt()
+      }
       className={buttonClass}
     >
       Add to cart

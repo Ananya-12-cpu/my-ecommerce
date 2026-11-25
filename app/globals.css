@@ -256,3 +256,117 @@ input:focus, textarea:focus, select:focus {
 @media (prefers-reduced-motion: reduce) {
   .login-blob, .login-float { animation: none; }
 }
+
+/* ---------- Chatbot ---------- */
+
+@keyframes chat-panel-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.6); clip-path: circle(0% at 100% 100%); }
+  to   { opacity: 1; transform: translateY(0) scale(1); clip-path: circle(150% at 100% 100%); }
+}
+@keyframes chat-panel-out {
+  to { opacity: 0; transform: translateY(24px) scale(0.6); }
+}
+@keyframes chat-msg-bot {
+  from { opacity: 0; transform: translateX(-20px) scale(0.85); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes chat-msg-user {
+  from { opacity: 0; transform: translateX(20px) scale(0.85); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes chat-aurora {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes chat-online {
+  0%   { box-shadow: 0 0 0 0 rgb(110 231 183 / 0.7); }
+  100% { box-shadow: 0 0 0 7px rgb(110 231 183 / 0); }
+}
+@keyframes chat-dot {
+  0%, 60%, 100% { opacity: 0.4; transform: translateY(0); }
+  30%           { opacity: 1; transform: translateY(-5px); }
+}
+@keyframes chat-plane-fly {
+  0%   { transform: translate(0, 0); }
+  45%  { opacity: 1; transform: translate(24px, -24px); }
+  50%  { opacity: 0; transform: translate(-24px, 24px); }
+  100% { opacity: 1; transform: translate(0, 0); }
+}
+@keyframes chat-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes chat-halo {
+  from { opacity: 0.7; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.7); }
+}
+@keyframes chat-icon-spin {
+  from { opacity: 0; transform: rotate(-180deg) scale(0.4); }
+  to   { opacity: 1; transform: rotate(0) scale(1); }
+}
+@keyframes chat-teaser {
+  0%      { opacity: 0; visibility: visible; transform: translateY(10px) scale(0.8); }
+  6%, 92% { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+  100%    { opacity: 0; visibility: hidden; transform: translateY(6px) scale(0.95); }
+}
+@keyframes chat-wave {
+  0%, 60%, 100% { transform: rotate(0); }
+  10%, 30%      { transform: rotate(18deg); }
+  20%, 40%      { transform: rotate(-8deg); }
+}
+
+.chat-panel-in  { animation: chat-panel-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards; transform-origin: bottom right; }
+.chat-panel-out { animation: chat-panel-out 0.22s ease-in forwards; transform-origin: bottom right; pointer-events: none; }
+.chat-msg-bot   { animation: chat-msg-bot 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; transform-origin: bottom left; }
+.chat-msg-user  { animation: chat-msg-user 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; transform-origin: bottom right; }
+/* "backwards" fill so the hover transform still applies after the entrance. */
+.chat-product   { animation: fade-in-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.chat-aurora {
+  background-image: linear-gradient(110deg, #5b21b6, #a21caf, #e11d48, #a21caf, #5b21b6);
+  background-size: 300% 100%;
+  animation: chat-aurora 8s ease-in-out infinite;
+}
+.chat-online    { animation: chat-online 1.6s ease-out infinite; }
+.chat-dot       { width: 7px; height: 7px; border-radius: 9999px; animation: chat-dot 1s ease-in-out infinite; }
+.chat-plane-fly { animation: chat-plane-fly 0.6s ease-in-out; }
+.chat-float     { animation: chat-float 3s ease-in-out infinite; }
+.chat-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid #c026d3;
+  pointer-events: none;
+  opacity: 0;
+  animation: chat-halo 2.4s ease-out infinite;
+}
+.chat-icon-spin { animation: chat-icon-spin 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
+.chat-teaser    { animation: chat-teaser 7s ease 1.5s both; }
+.chat-wave      { display: inline-block; transform-origin: 70% 70%; animation: chat-wave 2s ease-in-out infinite; }
+
+/* The global reduced-motion rule only shortens durations, so switch loops off. */
+@media (prefers-reduced-motion: reduce) {
+  .chat-aurora, .chat-online, .chat-dot, .chat-float, .chat-halo, .chat-wave { animation: none; }
+}
+
+/* ---------- Login required prompt ---------- */
+
+@keyframes gate-ring {
+  from { opacity: 0.45; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.7); }
+}
+@keyframes gate-wiggle {
+  0%, 60%, 100% { transform: rotate(0); }
+  68%, 84%      { transform: rotate(-12deg); }
+  76%, 92%      { transform: rotate(12deg); }
+}
+@keyframes gate-shackle {
+  0%, 40%, 100% { transform: translateY(0); }
+  50%           { transform: translateY(-2px); }
+}
+.gate-ring    { opacity: 0; animation: gate-ring 1.8s ease-out infinite; }
+.gate-wiggle  { animation: gate-wiggle 2.4s ease-in-out infinite; }
+.gate-shackle { animation: gate-shackle 2.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gate-ring, .gate-wiggle, .gate-shackle { animation: none; }
+}

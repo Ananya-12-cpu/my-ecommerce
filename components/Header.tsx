@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
+import { useLoginPrompt } from "@/components/LoginPrompt";
 import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
 import { useAuth } from "@/lib/auth-context";
@@ -59,9 +60,13 @@ function ProfileIcon() {
 }
 
 export default function Header() {
-  const { totalItems } = useCart();
+  const { totalItems: cartCount } = useCart();
   const { items: wishlistItems } = useWishlist();
   const { user } = useAuth();
+  const showLoginPrompt = useLoginPrompt();
+  // Guests have no cart or wishlist, so never show a count for them.
+  const totalItems = user ? cartCount : 0;
+  const wishlistCount = user ? wishlistItems.length : 0;
   const pathname = usePathname();
 
   // The menu is "open" only for the page it was opened on, so navigating
@@ -83,9 +88,16 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  // Signed-out visitors get the login pop-up instead of opening cart/wishlist.
+  const guardLink = (href: string) => (e: MouseEvent) => {
+    if (user || (href !== "/cart" && href !== "/wishlist")) return;
+    e.preventDefault();
+    showLoginPrompt();
+  };
+
   const links: { href: string; label: string; count?: number }[] = [
     { href: "/shop", label: "Shop" },
-    { href: "/wishlist", label: "Wishlist", count: wishlistItems.length },
+    { href: "/wishlist", label: "Wishlist", count: wishlistCount },
     { href: "/cart", label: "Cart", count: totalItems },
     ...(user?.role === "user" ? [{ href: "/orders", label: "Orders" }] : []),
     ...(user ? [{ href: "/offers", label: "Offer Zone" }] : []),
@@ -111,7 +123,7 @@ export default function Header() {
         {/* Desktop navigation */}
         <nav className="hidden items-center gap-6 text-sm font-medium lg:flex">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className={`${linkClass} ${l.count !== undefined ? "relative" : ""}`}>
+            <Link key={l.href} href={l.href} onClick={guardLink(l.href)} className={`${linkClass} ${l.count !== undefined ? "relative" : ""}`}>
               {l.label}
               {l.count !== undefined && <Badge count={l.count} />}
             </Link>
@@ -129,6 +141,7 @@ export default function Header() {
         <div className="flex items-center gap-1 lg:hidden">
           <Link
             href="/cart"
+            onClick={guardLink("/cart")}
             aria-label={`Cart${totalItems ? `, ${totalItems} items` : ""}`}
             className="relative flex h-10 w-10 items-center justify-center rounded-full text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
@@ -206,7 +219,10 @@ export default function Header() {
                   >
                     <Link
                       href={l.href}
-                      onClick={closeMenu}
+                      onClick={(e) => {
+                        closeMenu();
+                        guardLink(l.href)(e);
+                      }}
                       aria-current={active ? "page" : undefined}
                       className={`flex items-center justify-between py-3.5 ${
                         active ? "text-sky-700 dark:text-sky-400" : ""
